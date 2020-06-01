@@ -1,0 +1,35 @@
+@import "../../styles/variables.scss";
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4rem;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  background-color: $color-grey;
+  z-index: 10000;
+}
+.brand {
+  font-size: 2.4rem;
+  margin: 0 1.5rem;
+  color: $color-black;
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navLeft {
+  display: flex;
+}
+.navItem {
+  font-size: 1.4rem;
+  &:not(:last-of-type) {
+    margin-right: 1.5rem;
+  }
+}
+.navItemText {
+  color: $color-black;
+}

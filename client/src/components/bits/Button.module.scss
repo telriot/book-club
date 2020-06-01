@@ -1,0 +1,32 @@
+@import "../../styles/variables.scss";
+.button {
+  display: block;
+  border: none;
+  padding: 1rem 6rem 0.6rem;
+
+  background-color: $color-red;
+  font-size: 1.6rem;
+  color: $color-white;
+  text-transform: uppercase;
+
+  transition: all 0.2s;
+
+  &:hover {
+    color: $color-red;
+    background: $color-white;
+    outline: 1px solid $color-red;
+  }
+
+  @media (max-width: 37.5em) {
+    width: 100%;
+  }
+}
+
+.button-grey {
+  background-color: $color-grey;
+  &:hover {
+    color: $color-grey;
+    background: $color-white;
+    outline: 1px solid $color-grey;
+  }
+}

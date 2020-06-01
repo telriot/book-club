@@ -1,0 +1,40 @@
+@import "../../styles/variables.scss";
+
+.wrapper {
+  margin-bottom: 3rem;
+}
+.input,
+.textarea {
+  display: block;
+  width: 100%;
+
+  border: none;
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 0.7rem;
+  border-radius: 2px;
+
+  background-color: $color-white;
+
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 2rem;
+
+  transition: all 0.2s;
+  &:hover {
+    background-color: $color-beige;
+  }
+  &:focus {
+    box-shadow: 0 0 2px rgba($color-black, 0.7);
+  }
+}
+.textarea {
+  resize: none;
+  overflow: auto;
+  outline: none;
+}
+
+.error {
+  color: $color-red;
+  margin-bottom: -1.7rem;
+  padding: 0 0.3rem;
+}
