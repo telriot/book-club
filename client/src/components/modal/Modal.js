@@ -5,6 +5,7 @@ import styles from "./Modal.module.scss"
 
 function Modal({ children }) {
   const { state, dispatch } = useContext(AppContext)
+
   const handleBtnClick = () => {
     dispatch({ type: "TOGGLE_MODAL" })
   }

@@ -40,7 +40,6 @@ module.exports = {
 
   loginUser(req, res, next) {
     const { username, _id } = req.user
-    console.log(req.user)
     const userInfo = { username: username, id: _id }
     res.send(userInfo)
   },

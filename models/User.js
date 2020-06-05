@@ -19,6 +19,16 @@ const UserSchema = new Schema({
     required: true,
   },
   books: Array,
+  firstName: String,
+  lastName: String,
+  country: String,
+  city: String,
+  requestsIn: [{ type: Schema.Types.ObjectId, ref: "Request" }],
+  requestsOut: [{ type: Schema.Types.ObjectId, ref: "Request" }],
+  date: {
+    type: Date,
+    default: Date.now,
+  },
   //resetPasswordToken: String,
   //resetPasswordExpires: String,
 })

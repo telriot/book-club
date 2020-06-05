@@ -1,0 +1,8 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+.container {
+  @include main-grid;
+}
+.main {
+  @include main-books;
+}

@@ -1,17 +1,17 @@
-import React, { useContext, useRef } from "react"
+import React, { useContext } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
-import { Formik, Form } from "formik"
-import * as Yup from "yup"
-import validators from "../../helpers/validators"
 import Button from "../bits/Button"
 import TextInput from "../bits/TextInput"
 import styles from "./AuthForm.module.scss"
+import validators from "../../helpers/validators"
+import { Formik, Form } from "formik"
+import * as Yup from "yup"
 import axios from "axios"
 
-const LogInForm = (props) => {
-  const { state, dispatch } = useContext(AppContext)
-  const { authState, authDispatch } = useContext(AuthContext)
+const LogInForm = () => {
+  const { dispatch } = useContext(AppContext)
+  const { authDispatch } = useContext(AuthContext)
   const validationSchema = {
     username: validators.username,
     password: validators.password,
@@ -24,7 +24,6 @@ const LogInForm = (props) => {
       const result = await axios.post("/api/auth/login", submission, {
         "Content-Type": "application/x-www-form-urlencoded",
       })
-
       result.data.id &&
         authDispatch({
           type: "LOGIN_USER",
@@ -41,7 +40,8 @@ const LogInForm = (props) => {
   }
 
   return (
-    <React.Fragment>
+    <div className={styles.container}>
+      <h2 className={styles.header}>Log in</h2>
       <Formik
         initialValues={{
           username: "",
@@ -50,8 +50,9 @@ const LogInForm = (props) => {
         validationSchema={Yup.object(validationSchema)}
         onSubmit={handleSubmit}
       >
-        {({ values, errors }) => (
-          <Form>
+        {() => (
+          <Form className={styles.form}>
+            {" "}
             <TextInput
               label="Username"
               type="text"
@@ -65,13 +66,18 @@ const LogInForm = (props) => {
               placeholder="Password"
             />
             <div className={styles.btnDiv}>
-              <Button text="Cancel" type="button" onClick={handleCancel} />
+              <Button
+                text="Cancel"
+                color="blue"
+                type="button"
+                onClick={handleCancel}
+              />
               <Button type="submit" text="Submit" />
             </div>
           </Form>
         )}
       </Formik>
-    </React.Fragment>
+    </div>
   )
 }
 

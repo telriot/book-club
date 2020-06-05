@@ -1,0 +1,35 @@
+@import "../../styles/variables.scss";
+.wrapper {
+  grid-column: main-start/main-end;
+  grid-row: pagination-start/pagination-end;
+  justify-self: flex-end;
+  display: flex;
+  justify-content: space-around;
+}
+.item {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 3rem;
+  height: 3rem;
+  font-size: 1.2rem;
+  border: none;
+  background-color: transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+  &:hover {
+    color: $color-red;
+    box-shadow: $box-shadow-2;
+  }
+}
+.itemActive {
+  @extend .item;
+  color: $color-red;
+  font-weight: 500;
+}
+.itemIcon {
+  @extend .item;
+  fill: $color-black;
+  font-size: 1.2rem;
+}

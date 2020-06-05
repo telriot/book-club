@@ -3,10 +3,8 @@ const Schema = mongoose.Schema
 
 mongoose.promise = Promise
 const BookSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
+  info: Object,
+  googleId: String,
   users: Array,
 })
 

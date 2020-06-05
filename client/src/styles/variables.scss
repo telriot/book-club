@@ -1,7 +1,11 @@
 /* SCSS HEX */
-$color-grey: #93b7beff;
-$color-white: #f1fffaff;
-$color-beige: #d5c7bcff;
-$color-red: #785964ff;
-$color-brown: #454545ff;
+$color-white: #fdfffcff;
+$color-blue: #2ec4b6ff;
+$color-red: #e71d36ff;
+$color-orange: #ff9f1cff;
+$color-rich-black: #011627ff;
 $color-black: rgb(12, 12, 12);
+$color-grey: rgb(83, 83, 83);
+
+$box-shadow-1: 0 0.1rem 0.2rem rgba($color-rich-black, 0.5);
+$box-shadow-2: 0 0.1rem 0.4rem rgba($color-rich-black, 0.3);

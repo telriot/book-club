@@ -1,0 +1,30 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+.container {
+  @include main-grid;
+}
+.main {
+  @include main-books;
+}
+.sideBar {
+  grid-column: sidebar-start/sidebar-end;
+  grid-row: main-start/main-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 3rem;
+}
+.header {
+  font-size: 2rem;
+  font-weight: 400;
+}
+.username {
+  font-size: 4rem;
+  font-weight: 500;
+  letter-spacing: 0.2rem;
+  margin-bottom: 3rem;
+}
+.location {
+  font-weight: 400;
+}

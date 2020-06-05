@@ -1,0 +1,60 @@
+@import "../../styles/variables.scss";
+
+.wrapper {
+  margin-bottom: 3rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-white;
+}
+.label {
+  padding: 0.8rem 1.2rem;
+}
+.select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -moz-padding-end: 0px;
+  -moz-padding-start: 0px;
+  background: transparent;
+  appearance: none;
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 2rem;
+  padding: 0.8rem 1.2rem;
+  width: 100%;
+  border: none;
+  margin-bottom: 0.7rem;
+  border-radius: 2px;
+  outline: none;
+  &:hover {
+    background-color: rgba($color-rich-black, 0.05);
+  }
+  &:focus {
+    border-color: #aaa;
+    box-shadow: 0 0 1px 3px rgba($color-red, 0.5);
+    box-shadow: 0 0 0 3px -moz-mac-focusring;
+    color: #222;
+    outline: 0;
+  }
+  option {
+    font-weight: inherit;
+  }
+  &:-moz-focusring {
+    outline: 0;
+    color: transparent;
+  }
+}
+@-moz-document url-prefix() {
+  .select {
+    padding: 0.8rem;
+  }
+}
+.error {
+  position: absolute;
+  top: 3.9rem;
+  left: 1rem;
+  color: $color-red;
+  margin-bottom: -1.7rem;
+  padding: 0 0.3rem;
+}

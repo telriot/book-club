@@ -1,9 +1,17 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express")
+var router = express.Router()
+const { asyncErrorHandler } = require("../middleware")
+const { getUserInfo, getUserPublic, editUser } = require("../controllers/users")
+const { userEditValidationRules, validate } = require("../config/validators")
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.get("/:username", asyncErrorHandler(getUserInfo))
+router.get("/public/:username", asyncErrorHandler(getUserPublic))
 
-module.exports = router;
+router.put(
+  "/:username",
+  userEditValidationRules(),
+  validate,
+  asyncErrorHandler(editUser)
+)
+
+module.exports = router

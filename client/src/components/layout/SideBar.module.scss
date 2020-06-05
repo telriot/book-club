@@ -1,0 +1,58 @@
+@import "../../styles/variables.scss";
+.container {
+  grid-column: sidebar-start/sidebar-end;
+  grid-row: main-start/main-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 3rem;
+}
+.header {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+.selector {
+  @extend .header;
+  transition: all 0.2s;
+  cursor: pointer;
+  &:hover {
+    color: $color-red;
+  }
+}
+.selectorAlt {
+  @extend .selector;
+
+  &:hover {
+    color: $color-blue;
+  }
+}
+.button {
+  display: block;
+  border: none;
+  width: 14rem;
+  padding: 0.4rem 1.2rem;
+  margin: 0.8rem 0;
+  background-color: transparent;
+  font-size: 1.4rem;
+  letter-spacing: 0.3rem;
+  transition: all 0.2s;
+  &:hover {
+    color: $color-red;
+    box-shadow: $box-shadow-2;
+  }
+}
+.buttonActive {
+  @extend .button;
+  color: $color-red;
+}
+.buttonAlt {
+  @extend .button;
+  &:hover {
+    color: $color-blue;
+  }
+}
+.buttonActiveAlt {
+  @extend .buttonActive;
+  color: $color-blue;
+}

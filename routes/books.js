@@ -1,7 +1,17 @@
 const express = require("express")
 var router = express.Router()
 const { asyncErrorHandler } = require("../middleware")
-const { getBooks, getMyBooks } = require("../controllers/books")
+const {
+  getBooks,
+  getMyBooks,
+  addBook,
+  destroyBook,
+  getBookDetail,
+} = require("../controllers/books")
 router.get("/", asyncErrorHandler(getBooks))
 router.get("/:username", asyncErrorHandler(getMyBooks))
+router.get("/detail/:googleId", asyncErrorHandler(getBookDetail))
+router.post("/:username", asyncErrorHandler(addBook))
+router.delete("/:username", asyncErrorHandler(destroyBook))
+
 module.exports = router

@@ -1,0 +1,13 @@
+@mixin main-grid {
+  display: grid;
+  grid-template-rows: [top-gutter-start]8rem [top-gutter-end main-start]1fr[main-end pagination-start]5rem[pagination-end];
+  grid-template-columns: [left-gutter-start]6vw [left-gutter-end sidebar-start]30rem[sidebar-end main-start] 1fr[main-end right-gutter-start]8vw[right-gutter-end];
+}
+@mixin main-books {
+  grid-column: main-start/main-end;
+  grid-row: main-start/main-end;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4rem;
+  margin-bottom: 3rem;
+}

@@ -10,6 +10,7 @@ const passport = require("./passport")
 const authRouter = require("./routes/auth")
 const booksRouter = require("./routes/books")
 const indexRouter = require("./routes/index")
+const requestsRouter = require("./routes/requests")
 const usersRouter = require("./routes/users")
 
 const app = express()
@@ -55,6 +56,7 @@ app.use(passport.session())
 app.use("/api/", indexRouter)
 app.use("/api/auth", authRouter)
 app.use("/api/books", booksRouter)
+app.use("/api/requests", requestsRouter)
 app.use("/api/users", usersRouter)
 
 module.exports = app

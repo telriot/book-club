@@ -7,10 +7,12 @@ const {
   createUser,
   loginUser,
   logoutUser,
+  editUser,
 } = require("../controllers/auth")
 const {
   userSignupValidationRules,
   userLoginValidationRules,
+  userEditValidationRules,
   validate,
 } = require("../config/validators")
 
@@ -31,5 +33,10 @@ router.post(
   asyncErrorHandler(loginUser)
 )
 router.post("/logout", logoutUser)
-
+router.put(
+  "/:username",
+  userEditValidationRules(),
+  validate,
+  asyncErrorHandler(editUser)
+)
 module.exports = router

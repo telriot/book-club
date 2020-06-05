@@ -1,18 +1,20 @@
 import React, { useContext } from "react"
-import styles from "./Navbar.module.scss"
 import { Link } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
+import styles from "./Navbar.module.scss"
 import axios from "axios"
 
 function Navbar() {
-  const { state, dispatch } = useContext(AppContext)
+  const { dispatch } = useContext(AppContext)
   const { authState, authDispatch } = useContext(AuthContext)
   const { username } = authState
+
   const handleModal = (e) => {
     e.persist()
     dispatch({ type: "TOGGLE_MODAL", modal: e.target.name })
   }
+
   const handleLogout = async () => {
     try {
       const result = await axios.post("/api/auth/logout")
@@ -22,6 +24,7 @@ function Navbar() {
       console.log(error)
     }
   }
+
   return (
     <React.Fragment>
       <header className={styles.header}>
@@ -74,16 +77,47 @@ function Navbar() {
                 <li className={styles.navItem}>
                   <Link
                     className={styles.navItemText}
-                    name="logout"
-                    onClick={handleLogout}
-                    to="#"
+                    name="find-books"
+                    to="find-books"
                   >
-                    Log Out
+                    Find Books
+                  </Link>
+                </li>
+                <li className={styles.navItem}>
+                  <Link
+                    className={styles.navItemText}
+                    name="my-profile"
+                    to="/my-profile"
+                  >
+                    My Profile
+                  </Link>
+                </li>
+                <li className={styles.navItem}>
+                  <Link
+                    className={styles.navItemText}
+                    name="my-trades"
+                    to="/my-trades"
+                  >
+                    My Trades
                   </Link>
                 </li>
               </>
             )}
           </ul>
+          {username ? (
+            <ul className={styles.navRight}>
+              <li className={styles.navItem}>
+                <Link
+                  className={styles.navItemText}
+                  name="logout"
+                  onClick={handleLogout}
+                  to="#"
+                >
+                  Log Out
+                </Link>
+              </li>
+            </ul>
+          ) : null}
         </nav>
       </header>
     </React.Fragment>

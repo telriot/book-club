@@ -1,0 +1,17 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+.container {
+  @include main-grid;
+}
+.main {
+  @include main-books;
+}
+.sideBar {
+  grid-column: sidebar-start/sidebar-end;
+  grid-row: main-start/main-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-top: 3rem;
+}

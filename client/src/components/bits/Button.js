@@ -5,7 +5,7 @@ function Button(props) {
   const { text, color, type, onClick } = props
   return (
     <button
-      className={styles.button}
+      className={color === "blue" ? styles.buttonBlue : styles.button}
       type={type ? type : "button"}
       onClick={onClick}
     >

@@ -1,0 +1,78 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
+.table {
+  width: 80%;
+  height: max-content;
+  margin-top: 4rem;
+  justify-self: center;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.header {
+  th {
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+    padding: 1.2rem 0.6rem;
+    border-bottom: 2px solid $color-blue;
+    transition: all 0.2s;
+  }
+}
+.col1 {
+  width: 60%;
+}
+.body {
+}
+.row {
+  td {
+    font-size: 1.3rem;
+    line-height: 2.2rem;
+    padding: 0.9rem 0.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &:hover {
+    background: rgba($color-blue, 0.07);
+    .thumbIcon {
+      visibility: visible;
+    }
+  }
+}
+.tdPending {
+  font-style: italic;
+}
+
+.headerAlt {
+  @extend .header;
+  th {
+    border-bottom: 2px solid $color-red;
+  }
+}
+.rowAlt {
+  @extend .row;
+  &:hover {
+    background: rgba($color-red, 0.05);
+  }
+}
+.thumbIcons {
+  display: flex;
+  justify-content: space-evenly;
+}
+.thumbIcon {
+  font-size: 2rem;
+  visibility: hidden;
+  fill: $color-grey;
+  cursor: pointer;
+  &:hover {
+    fill: $color-blue;
+  }
+}
+.thumbIconAlt {
+  @extend .thumbIcon;
+  &:hover {
+    fill: $color-red;
+  }
+}

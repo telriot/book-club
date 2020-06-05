@@ -1,0 +1,41 @@
+@import "../../styles/variables.scss";
+.header {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+.select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -moz-padding-end: 0px;
+  -moz-padding-start: 0px;
+  background: transparent;
+  appearance: none;
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 300;
+  padding: 0.5rem 0.8rem;
+  width: max-content;
+  border: none;
+  margin-bottom: 0.7rem;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: rgba($color-rich-black, 0.05);
+  }
+  &:focus {
+    box-shadow: $box-shadow-1;
+  }
+  option {
+    font-weight: inherit;
+    font-size: inherit;
+  }
+  &:-moz-focusring {
+    outline: 0;
+    color: transparent;
+  }
+}
+@-moz-document url-prefix() {
+  .select {
+    padding: 0.5rem 0.4rem;
+  }
+}

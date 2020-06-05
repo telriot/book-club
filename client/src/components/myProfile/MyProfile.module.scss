@@ -1,0 +1,23 @@
+@import "../../styles/variables.scss";
+.container {
+  display: grid;
+  grid-template-columns: [left-gutter-start]20vw[left-gutter-end main-start]1fr[main-end right-gutter-start]30vw[right-gutter-end];
+  grid-template-rows: [top-gutter-start]15rem[top-gutter-end main-start]1fr[main-end bottom-gutter-start]4rem[bottom-gutter-end];
+}
+.header {
+  grid-column: main-start/main-end;
+  grid-row: top-gutter-start/main-start;
+  align-self: center;
+  font-size: 2.8rem;
+  font-weight: 300;
+}
+.form {
+  grid-column: main-start/main-end;
+  grid-row: main-start/main-end;
+}
+.btnDiv {
+  display: flex;
+  flex: 0.4;
+  justify-content: space-between;
+  width: 300px;
+}
