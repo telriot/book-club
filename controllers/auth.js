@@ -14,7 +14,7 @@ module.exports = {
   },
 
   async createUser(req, res, next) {
-    const { username, password, email } = req.body
+    const { username, password, email, country } = req.body
     await User.findOne({ username }, (err, user) => {
       if (err) {
         res.send(err)
@@ -25,6 +25,7 @@ module.exports = {
           username,
           password,
           email,
+          country,
         })
         user.save((err, savedUser) => {
           if (err) {

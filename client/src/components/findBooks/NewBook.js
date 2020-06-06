@@ -44,17 +44,17 @@ function NewBook() {
   }
 
   useEffect(() => {
-    searchTerm && findBooks()
+    searchTerm.length > 2 && findBooks()
   }, [searchTerm])
   useEffect(() => {
-    if (languageFilter && searchTerm) {
+    if (languageFilter && searchTerm.length > 2) {
       searchDispatch({ type: "SET_PAGE", page: 1 })
       findBooks()
       searchDispatch({ type: "SET_DISPLAY", display: true })
     }
   }, [languageFilter])
   useEffect(() => {
-    if (searchState.page && searchTerm) {
+    if (searchState.page && searchTerm.length > 2) {
       findBooks()
       searchDispatch({ type: "SET_DISPLAY", display: true })
     }

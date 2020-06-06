@@ -1,6 +1,5 @@
-import React, { useContext } from "react"
+import React from "react"
 import styles from "./Pagination.module.scss"
-import { SearchContext } from "../../contexts/SearchContext"
 import {
   MdChevronLeft,
   MdChevronRight,
@@ -9,20 +8,16 @@ import {
 } from "react-icons/md"
 
 function PaginationItem(props) {
-  const { searchState, searchDispatch } = useContext(SearchContext)
-  //const { pages } = searchState
-
-  const { page, type } = props
-  const { pages } = searchState
+  const { page, type, pages, setPage, currentPage } = props
   const handlePageSelection = (page) => () => {
     if (page > pages) page = pages
     if (page < 1) page = 1
-    searchDispatch({ type: "SET_PAGE", page })
+    setPage(page)
   }
 
   const PageItem = () => (
     <div
-      className={searchState.page === page ? styles.itemActive : styles.item}
+      className={currentPage === page ? styles.itemActive : styles.item}
       onClick={handlePageSelection(page)}
     >
       {page}
@@ -32,7 +27,7 @@ function PaginationItem(props) {
   const PagePrev = () => (
     <div
       className={styles.itemIcon}
-      onClick={handlePageSelection(searchState.page - 1)}
+      onClick={handlePageSelection(currentPage - 1)}
     >
       <MdChevronLeft />
     </div>
@@ -40,7 +35,7 @@ function PaginationItem(props) {
   const PageNext = () => (
     <div
       className={styles.itemIcon}
-      onClick={handlePageSelection(searchState.page + 1)}
+      onClick={handlePageSelection(currentPage + 1)}
     >
       <MdChevronRight />
     </div>
@@ -53,7 +48,7 @@ function PaginationItem(props) {
   const PageLast = () => (
     <div
       className={styles.itemIcon}
-      onClick={handlePageSelection(searchState.page + 5)}
+      onClick={handlePageSelection(currentPage + 5)}
     >
       <MdLastPage />
     </div>

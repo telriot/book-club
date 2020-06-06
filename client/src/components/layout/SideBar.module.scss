@@ -1,12 +1,8 @@
 @import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
 .container {
-  grid-column: sidebar-start/sidebar-end;
-  grid-row: main-start/main-end;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  padding-top: 3rem;
+  @include sidebar;
 }
 .header {
   font-size: 2rem;
@@ -16,14 +12,16 @@
   @extend .header;
   transition: all 0.2s;
   cursor: pointer;
-  &:hover {
+  &:hover,
+  &:focus {
     color: $color-red;
   }
 }
 .selectorAlt {
   @extend .selector;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: $color-blue;
   }
 }
@@ -37,7 +35,8 @@
   font-size: 1.4rem;
   letter-spacing: 0.3rem;
   transition: all 0.2s;
-  &:hover {
+  &:hover,
+  &:focus {
     color: $color-red;
     box-shadow: $box-shadow-2;
   }
@@ -48,7 +47,8 @@
 }
 .buttonAlt {
   @extend .button;
-  &:hover {
+  &:hover,
+  &:focus {
     color: $color-blue;
   }
 }

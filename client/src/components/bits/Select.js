@@ -16,7 +16,9 @@ const Select = ({ label, ...props }) => {
         disabled={props.disabled}
         {...field}
         {...props}
-      />
+      >
+        {props.children}
+      </select>
       {meta.touched && meta.error ? (
         <p className={styles.error}>{meta.error}</p>
       ) : null}

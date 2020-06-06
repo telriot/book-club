@@ -1,11 +1,14 @@
 import React, { useContext } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import Button from "../bits/Button"
+import Select from "../bits/Select"
 import TextInput from "../bits/TextInput"
 import validators from "../../helpers/validators"
 import styles from "./AuthForm.module.scss"
+import selectStyles from "../bits/Select.module.scss"
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
+import countries from "../../data/countries.json"
 
 import axios from "axios"
 
@@ -16,12 +19,13 @@ const SignUpForm = () => {
     username: validators.username,
     password: validators.password,
     email: validators.email,
+    country: validators.stringRequired,
   }
 
   const handleSubmit = async (values) => {
-    const { username, email, password } = values
+    const { username, email, password, country } = values
     try {
-      const submission = { username, email, password }
+      const submission = { username, email, password, country }
       const result = await axios.post("/api/auth/signup", submission, {
         "Content-Type": "application/x-www-form-urlencoded",
       })
@@ -44,6 +48,7 @@ const SignUpForm = () => {
           password: "",
           email: "",
           showPassword: false,
+          country: "",
         }}
         validationSchema={Yup.object(validationSchema)}
         onSubmit={handleSubmit}
@@ -62,6 +67,19 @@ const SignUpForm = () => {
               name="email"
               placeholder="Email Address"
             />
+            <Select label="Country" name="country">
+              {countries.map((option, index) => {
+                return (
+                  <option
+                    key={`option-${index}`}
+                    value={option.Code}
+                    className={selectStyles.option}
+                  >
+                    {option.Name}
+                  </option>
+                )
+              })}
+            </Select>
             <TextInput
               label="Password"
               type="password"
@@ -74,6 +92,7 @@ const SignUpForm = () => {
               name="password-check"
               placeholder="Confirm your password"
             />
+
             <div className={styles.btnDiv}>
               <Button
                 text="Cancel"

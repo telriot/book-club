@@ -3,6 +3,10 @@
   font-size: 2rem;
   margin-bottom: 2rem;
 }
+.wrapper {
+  margin-bottom: 3rem;
+  position: relative;
+}
 .select {
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -13,12 +17,15 @@
   display: block;
   font-size: 1.6rem;
   font-weight: 300;
-  padding: 0.5rem 0.8rem;
-  width: max-content;
+  padding: 0.8rem 1.2rem;
+  width: 18rem;
+  border-radius: 2px;
+
   border: none;
   margin-bottom: 0.7rem;
+  line-height: 2rem;
   transition: all 0.2s;
-
+  text-align-last: center;
   &:hover {
     background-color: rgba($color-rich-black, 0.05);
   }
@@ -36,6 +43,6 @@
 }
 @-moz-document url-prefix() {
   .select {
-    padding: 0.5rem 0.4rem;
+    padding: 0.8rem 0.4rem;
   }
 }

@@ -1,11 +1,9 @@
-import React, { useContext } from "react"
+import React from "react"
 import PaginationItem from "./PaginationItem"
 import styles from "./Pagination.module.scss"
-import { SearchContext } from "../../contexts/SearchContext"
 
-function Pagination() {
-  const { searchState, searchDispatch } = useContext(SearchContext)
-  const { page, pages } = searchState
+function Pagination(props) {
+  const { page, pages, displayedResults, setPage } = props
   const paginationItems = () => {
     let items = []
     if (pages > 1 && pages <= 5 && page < 4) {
@@ -23,16 +21,51 @@ function Pagination() {
     }
     return items
   }
-  return searchState.displayedResults.length ? (
+  return displayedResults.length ? (
     <div className={styles.wrapper}>
-      {page !== 1 ? <PaginationItem type="first" /> : null}
-      {page !== 1 ? <PaginationItem type="prev" /> : null}
+      {page !== 1 ? (
+        <PaginationItem
+          currentPage={props.page}
+          pages={pages}
+          setPage={setPage}
+          type="first"
+        />
+      ) : null}
+      {page !== 1 ? (
+        <PaginationItem
+          currentPage={props.page}
+          pages={pages}
+          setPage={setPage}
+          type="prev"
+        />
+      ) : null}
 
       {paginationItems().map((page, index) => (
-        <PaginationItem key={`paginator-${index}`} type="page" page={page} />
+        <PaginationItem
+          pages={pages}
+          setPage={setPage}
+          key={`paginator-${index}`}
+          type="page"
+          page={page}
+          currentPage={props.page}
+        />
       ))}
-      {page !== searchState.pages ? <PaginationItem type="next" /> : null}
-      {page !== searchState.pages ? <PaginationItem type="last" /> : null}
+      {page !== pages ? (
+        <PaginationItem
+          currentPage={props.page}
+          pages={pages}
+          setPage={setPage}
+          type="next"
+        />
+      ) : null}
+      {page !== pages ? (
+        <PaginationItem
+          currentPage={props.page}
+          pages={pages}
+          setPage={setPage}
+          type="last"
+        />
+      ) : null}
     </div>
   ) : null
 }

@@ -44,7 +44,11 @@
   font-size: 1.2rem;
   font-weight: 300;
   padding: 0.5rem 0.8rem;
-  &:hover {
-    background-color: $color-blue;
-  }
+  // &:hover {
+  //   background-color: $color-blue;
+  // }
+}
+.dropdownItemActive {
+  @extend .dropdownItem;
+  background-color: $color-blue;
 }

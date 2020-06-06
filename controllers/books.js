@@ -2,17 +2,60 @@ const Book = require("../models/Book")
 const User = require("../models/User")
 module.exports = {
   async getBooks(req, res, next) {
-    const books = await Book.find()
-    res.send(books)
+    const { page, limit, language, title, author, sortOrder } = req.query
+
+    const queryBuilder = () => {
+      let query = {}
+      if (language) query["info.language"] = language
+      if (author) query["info.authors"] = { $regex: author, $options: "i" }
+      if (title) query["info.title"] = { $regex: title, $options: "i" }
+      return query
+    }
+    const sortingBuilder = () => {
+      let filterOptions
+      if (sortOrder === "latest") filterOptions = "date"
+      if (sortOrder === "alphabetical") filterOptions = "info.title"
+      if (sortOrder === "length") filterOptions = "info.pageCount"
+      if (sortOrder === "year") filterOptions = "info.publishedDate"
+      return filterOptions
+    }
+    const sorting = sortingBuilder()
+    const query = queryBuilder()
+    const options = {
+      page,
+      limit,
+      sort: { [sorting]: +1 },
+    }
+    await Book.paginate(query, options, (err, result) => {
+      res.send(result)
+    })
   },
   async getMyBooks(req, res, next) {
     const { username } = req.params
     const user = await User.findOne({ username })
     res.send(user.books)
   },
+
+  /*async getMyLatestEntries(req, res, next) {
+    const { username } = req.params
+    const { limit } = req.query
+    const user = await User.findOne({ username })
+
+    let findLatestEntries = (arr) => {
+      let books = []
+      const startIndex = arr.length - 1
+      const endIndex = arr.length - limit - 1
+      for (let i = startIndex; i > endIndex; i--) {
+        arr[i] && books.push(arr[i])
+      }
+      return books
+    }
+    res.send(findLatestEntries(user.books))
+  },*/
+
   async getBookDetail(req, res, next) {
     const { googleId } = req.params
-    const book = await Book.findOne({ googleId })
+    const book = await Book.findOne({ googleId }).populate("users").exec()
     res.send(book)
   },
 
@@ -36,12 +79,7 @@ module.exports = {
       }
     }
     if (!alreadyHave) {
-      const userData = {
-        id: user._id,
-        username: user.username,
-        country: user.country,
-      }
-      await book.users.push(userData)
+      await book.users.push(user)
       await user.books.push(book)
       book.save()
       user.save()

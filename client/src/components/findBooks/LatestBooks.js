@@ -12,7 +12,7 @@ function LatestBooks() {
     try {
       const response = await axios.get(`/api/books/${authState.username}`)
       const books = response.data
-      dispatch({ type: "SET_BOOKS", books })
+      dispatch({ type: "SET_BOOKS", data: { books } })
     } catch (error) {
       console.log(error)
     }
@@ -22,7 +22,8 @@ function LatestBooks() {
   }
   const getLastFive = (arr) => {
     let display = []
-    for (let i = arr.length; i > arr.length - 5; i--) {
+    const number = arr.length < 5 ? arr.length : 5
+    for (let i = arr.length; i > arr.length - number; i--) {
       display.push(
         <p className={styles.text} key={`latest-${i}`}>
           {arr[i - 1].info.title}

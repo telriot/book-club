@@ -13,7 +13,8 @@
   text-transform: uppercase;
   transition: all 0.2s;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: $color-red;
     background: $color-white;
     border: 1px solid $color-red;
@@ -28,7 +29,8 @@
 .buttonBlue {
   @extend .button;
   background-color: $color-blue;
-  &:hover {
+  &:hover,
+  &:focus {
     color: $color-blue;
     background: $color-white;
     border: 1px solid $color-blue;

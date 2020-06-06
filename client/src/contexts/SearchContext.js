@@ -18,10 +18,16 @@ const SearchContextProvider = ({ children }) => {
   const appReducer = (state, action) => {
     switch (action.type) {
       case TYPES.HANDLE_CHANGE:
-        return {
-          ...state,
-          input: action.input,
-        }
+        return action.input.length > 2
+          ? {
+              ...state,
+              input: action.input,
+            }
+          : {
+              ...state,
+              input: action.input,
+              results: [],
+            }
       case TYPES.SET_RESULTS:
         return {
           ...state,
@@ -61,6 +67,7 @@ const SearchContextProvider = ({ children }) => {
       case TYPES.HANDLE_ENTER_KEY:
         return {
           ...state,
+
           displayedResults: state.results,
         }
       default:

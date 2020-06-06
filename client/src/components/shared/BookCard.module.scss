@@ -15,6 +15,7 @@
 .image {
   align-self: center;
   max-height: 220px;
+  cursor: pointer;
 }
 .title {
   font-size: 1.3rem;
@@ -43,7 +44,8 @@
   text-transform: uppercase;
   transition: all 0.3s;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: $color-black;
   }
 }

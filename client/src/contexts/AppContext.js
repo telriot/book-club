@@ -3,7 +3,12 @@ import { TYPES } from "./types"
 const initialState = {
   modal: false,
   books: [],
+  page: 1,
+  pages: 0,
+  totalResults: 0,
+  maxResults: 20,
   sort: "title",
+  sortOrder: "",
   tradesSort: "title",
   bookDetail: {
     users: [],
@@ -30,6 +35,9 @@ const initialState = {
   tradeToConfirm: {},
   isAdding: false,
   inOut: "in",
+  languageFilter: "",
+  titleFilter: "",
+  authorFilter: "",
 }
 export const AppContext = createContext(initialState)
 
@@ -42,14 +50,22 @@ const AppContextProvider = ({ children }) => {
           modal: state.modal ? false : action.modal,
         }
       case TYPES.SET_BOOKS:
+        const { books, totalResults, totalPages } = action.data
         return {
           ...state,
-          books: action.books,
+          books,
+          totalResults: totalResults ? totalResults : state.totalResults,
+          pages: totalPages ? totalPages : state.totalPages,
         }
       case TYPES.RESET_BOOKS:
         return {
           ...state,
           books: initialState.books,
+        }
+      case TYPES.SET_PAGE:
+        return {
+          ...state,
+          page: action.page,
         }
       case TYPES.SET_BOOK_DETAIL:
         return {
@@ -89,6 +105,11 @@ const AppContextProvider = ({ children }) => {
           sort: action.sort,
           books: action.sortedBooks,
         }
+      case TYPES.SET_SORT_SERVER_SIDE:
+        return {
+          ...state,
+          sortOrder: action.sortOrder,
+        }
       case TYPES.SET_TRADES_SORT:
         return {
           ...state,
@@ -104,6 +125,21 @@ const AppContextProvider = ({ children }) => {
         return {
           ...state,
           inOut: state.inOut === "in" ? "out" : "in",
+        }
+      case TYPES.SET_LANGUAGE_FILTER:
+        return {
+          ...state,
+          languageFilter: action.language,
+        }
+      case TYPES.SET_TITLE_FILTER:
+        return {
+          ...state,
+          titleFilter: action.title,
+        }
+      case TYPES.SET_AUTHOR_FILTER:
+        return {
+          ...state,
+          authorFilter: action.author,
         }
       default:
         return state

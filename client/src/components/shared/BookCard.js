@@ -21,7 +21,7 @@ function BookCard(props) {
         const response = await axios.post(`/api/books/${username}`, item)
         console.log(response)
         response.data.books &&
-          dispatch({ type: "SET_BOOKS", books: response.data.books })
+          dispatch({ type: "SET_BOOKS", data: { books: response.data.books } })
       } catch (error) {
         console.log(error)
       }
@@ -37,7 +37,7 @@ function BookCard(props) {
           params: { googleId: item.googleId },
         })
         const books = response.data
-        dispatch({ type: "SET_BOOKS", books })
+        dispatch({ type: "SET_BOOKS", data: { books } })
       } catch (error) {
         console.log(error)
       }
@@ -76,6 +76,7 @@ function BookCard(props) {
           className={styles.image}
           src={imageLinks ? imageLinks.thumbnail : coverBlank}
           alt="Book Cover"
+          onClick={handleOwners}
         />
       </div>
 

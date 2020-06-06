@@ -1,11 +1,12 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { SearchContext } from "../../contexts/SearchContext"
 import BookCard from "../shared/BookCard"
 import styles from "./BookSearchResults.module.scss"
 
 function BookSearchResults() {
-  const { searchState } = useContext(SearchContext)
+  const { searchState, searchDispatch } = useContext(SearchContext)
   const { displayedResults } = searchState
+  useEffect(() => searchDispatch({ type: "RESET_RESULTS" }), [])
   return (
     <div className={styles.container}>
       {displayedResults.length

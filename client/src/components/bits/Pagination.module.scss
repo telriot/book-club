@@ -18,7 +18,8 @@
   background-color: transparent;
   transition: all 0.2s;
   cursor: pointer;
-  &:hover {
+  &:hover,
+  &:focus {
     color: $color-red;
     box-shadow: $box-shadow-2;
   }
