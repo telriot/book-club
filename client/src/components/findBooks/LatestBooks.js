@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react"
 import { AppContext } from "../../contexts/AppContext"
-import axios from "axios"
 import { AuthContext } from "../../contexts/AuthContext"
+import axios from "axios"
+
 import styles from "./LatestBooks.module.scss"
 function LatestBooks() {
   const { state, dispatch } = useContext(AppContext)
   const { authState } = useContext(AuthContext)
   const { books } = state
   const [display, setDisplay] = useState([])
+
   const getMyBooks = async () => {
     try {
       const response = await axios.get(`/api/books/${authState.username}`)
@@ -20,6 +22,7 @@ function LatestBooks() {
       dispatch({ type: "RESET_BOOKS" })
     }
   }
+
   const getLastFive = (arr) => {
     let display = []
     const number = arr.length < 5 ? arr.length : 5

@@ -16,6 +16,7 @@ import BookDetail from "./bookDetail/BookDetail"
 import MyTrades from "./myTrades/MyTrades"
 import UserPublic from "./userPublic/UserPublic"
 import ConfirmationScreen from "./confirmationScreen/ConfirmationScreen"
+import ConfirmDeletion from "./shared/ConfirmDeletion"
 
 function App() {
   const { state } = useContext(AppContext)
@@ -63,6 +64,8 @@ function App() {
             <LogInForm />
           ) : state.modal === "signup" ? (
             <SignUpForm />
+          ) : state.modal === "delete" ? (
+            <ConfirmDeletion />
           ) : null}
         </Modal>
       </SearchContextProvider>

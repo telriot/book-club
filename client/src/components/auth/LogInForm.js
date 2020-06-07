@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useRef } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
 import Button from "../bits/Button"
@@ -16,8 +16,9 @@ const LogInForm = () => {
     username: validators.username,
     password: validators.password,
   }
-
+  const formikRef = useRef()
   const handleSubmit = async (values) => {
+    const formik = formikRef.current
     const { username, password } = values
     try {
       const submission = { username, password }
@@ -30,8 +31,12 @@ const LogInForm = () => {
           username: result.data.username,
           id: result.data.id,
         })
+      formik.setSubmitting(false)
+
       dispatch({ type: "TOGGLE_MODAL" })
     } catch (error) {
+      formik.setSubmitting(false)
+
       console.log(error)
     }
   }
@@ -43,6 +48,7 @@ const LogInForm = () => {
     <div className={styles.container}>
       <h2 className={styles.header}>Log in</h2>
       <Formik
+        innerRef={formikRef}
         initialValues={{
           username: "",
           password: "",
@@ -50,7 +56,7 @@ const LogInForm = () => {
         validationSchema={Yup.object(validationSchema)}
         onSubmit={handleSubmit}
       >
-        {() => (
+        {({ isSubmitting }) => (
           <Form className={styles.form}>
             {" "}
             <TextInput
@@ -72,7 +78,7 @@ const LogInForm = () => {
                 type="button"
                 onClick={handleCancel}
               />
-              <Button type="submit" text="Submit" />
+              <Button disabled={isSubmitting} type="submit" text="Submit" />
             </div>
           </Form>
         )}

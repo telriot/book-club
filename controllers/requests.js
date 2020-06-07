@@ -19,6 +19,8 @@ module.exports = {
   async sendRequest(req, res, next) {
     const { author, receiver, bookIn } = req.body
     const authorUser = await User.findById(author.id)
+      .populate("requestsOut")
+      .exec()
     const receiverUser = await User.findById(receiver.id)
     console.log(author, receiver, bookIn)
     if (authorUser && receiverUser) {
@@ -32,19 +34,29 @@ module.exports = {
       receiverUser.requestsIn.push(request)
       await authorUser.save()
       await receiverUser.save()
-      res.send("request succesfully sent")
+      res.send(authorUser.requestsOut)
     } else {
       res.send("something went wrong")
     }
   },
   async declineRequest(req, res, next) {
-    console.log("declined")
     const { id } = req.body
     const declinedRequest = await Request.findByIdAndUpdate(id, {
       status: "declined",
     })
     if (declinedRequest) {
       res.send("request succesfully declined")
+    } else {
+      res.send("something went wrong")
+    }
+  },
+  async cancelRequest(req, res, next) {
+    const { id } = req.body
+    const cancelledRequest = await Request.findByIdAndUpdate(id, {
+      status: "cancelled",
+    })
+    if (cancelledRequest) {
+      res.send("request succesfully cancelled")
     } else {
       res.send("something went wrong")
     }

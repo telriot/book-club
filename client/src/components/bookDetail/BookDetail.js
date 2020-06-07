@@ -1,6 +1,9 @@
 import React, { useEffect, useContext } from "react"
 import { useParams } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
+import { AuthContext } from "../../contexts/AuthContext"
+
+import InfoDetail from "./InfoDetail"
 import UserDetail from "./UserDetail"
 import styles from "./BookDetail.module.scss"
 import axios from "axios"
@@ -8,17 +11,9 @@ import axios from "axios"
 function BookDetail() {
   const params = useParams()
   const { state, dispatch } = useContext(AppContext)
-  const { users, info } = state.bookDetail
-  const {
-    title,
-    authors,
-    publisher,
-    publishedDate,
-    description,
-    pageCount,
-    infoLink,
-    imageLinks,
-  } = info
+  const { authState } = useContext(AuthContext)
+
+  const { users } = state.bookDetail
 
   const getBookDetail = async () => {
     try {
@@ -27,42 +22,43 @@ function BookDetail() {
       dispatch({ type: "SET_BOOK_DETAIL", bookDetail })
     } catch (error) {}
   }
+  const getMyTrades = async () => {
+    try {
+      const response = await axios.get(`/api/requests/${authState.username}`)
+      const { requestsIn, requestsOut } = response.data
+      dispatch({ type: "SET_TRADES", trades: { requestsIn, requestsOut } })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     getBookDetail()
+
     return () => {
       dispatch({ type: "RESET_BOOK_DETAIL" })
     }
   }, [])
+  useEffect(() => {
+    authState.username && getMyTrades()
+  }, [authState.username])
 
   return (
     <div className={styles.container}>
       <div className={styles.sideBar}>
-        <h1 className={styles.sideHeader}>{title}</h1>
-        {authors ? (
-          <h2 className={styles.author}>By {authors.toString()}</h2>
-        ) : null}
-
-        <a href={infoLink}>
-          {" "}
-          <img
-            src={imageLinks.thumbnail}
-            alt="Book cover"
-            style={{ width: "max-content" }}
-          />
-        </a>
-        <h4 className={styles.data}>
-          {publisher}, {publishedDate.slice(0, 4)}
-          <br />
-          {pageCount}pages
-        </h4>
-        <p className={styles.description}>{description}</p>
+        <InfoDetail />
       </div>
       <div className={styles.main}>
         <h2 className={styles.mainHeader}>Owned by</h2>
-        {users.map((user, index) => (
-          <UserDetail key={`user-detail-${index}`} user={user} index={index} />
-        ))}
+        {users
+          ? users.map((user, index) => (
+              <UserDetail
+                key={`user-detail-${index}`}
+                user={user}
+                index={index}
+              />
+            ))
+          : null}
       </div>
     </div>
   )

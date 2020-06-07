@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
 import styles from "./Navbar.module.scss"
@@ -9,6 +9,7 @@ function Navbar() {
   const { dispatch } = useContext(AppContext)
   const { authState, authDispatch } = useContext(AuthContext)
   const { username } = authState
+  const history = useHistory()
 
   const handleModal = (e) => {
     e.persist()
@@ -19,6 +20,7 @@ function Navbar() {
     try {
       const result = await axios.post("/api/auth/logout")
       authDispatch({ type: "LOGOUT_USER" })
+      history.push("/")
       console.log(result)
     } catch (error) {
       console.log(error)
@@ -74,24 +76,7 @@ function Navbar() {
                     My Books
                   </Link>
                 </li>
-                <li className={styles.navItem}>
-                  <Link
-                    className={styles.navItemText}
-                    name="find-books"
-                    to="find-books"
-                  >
-                    Find Books
-                  </Link>
-                </li>
-                <li className={styles.navItem}>
-                  <Link
-                    className={styles.navItemText}
-                    name="my-profile"
-                    to="/my-profile"
-                  >
-                    My Profile
-                  </Link>
-                </li>
+
                 <li className={styles.navItem}>
                   <Link
                     className={styles.navItemText}
@@ -106,6 +91,15 @@ function Navbar() {
           </ul>
           {username ? (
             <ul className={styles.navRight}>
+              <li className={styles.navItem}>
+                <Link
+                  className={styles.navItemText}
+                  name="my-profile"
+                  to="/my-profile"
+                >
+                  {authState.username}'s Profile
+                </Link>
+              </li>
               <li className={styles.navItem}>
                 <Link
                   className={styles.navItemText}

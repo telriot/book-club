@@ -5,15 +5,11 @@
   @include modal-form-container;
 }
 .header {
-  font-size: 2.6rem;
-  align-self: center;
+  font-size: 2rem;
   margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 500;
 }
-.form {
-  flex-direction: column;
-  justify-content: space-around;
-}
-
 .btnDiv {
   display: flex;
   justify-content: space-around;

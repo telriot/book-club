@@ -10,6 +10,7 @@ function FindBooks() {
   const { searchState, searchDispatch } = useContext(SearchContext)
   const { page, pages, displayedResults } = searchState
   const setPage = (page) => searchDispatch({ type: "SET_PAGE", page })
+
   useEffect(() => {
     searchDispatch({ type: "SET_PAGE", page: 1 })
   }, [])

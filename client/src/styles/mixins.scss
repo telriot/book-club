@@ -21,3 +21,10 @@
   padding-top: 3rem;
   margin-right: 2rem;
 }
+@mixin modal-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 36rem;
+  padding: 0.5rem 2rem;
+}

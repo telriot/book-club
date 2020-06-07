@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useRef } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import Button from "../bits/Button"
 import Select from "../bits/Select"
@@ -21,16 +21,26 @@ const SignUpForm = () => {
     email: validators.email,
     country: validators.stringRequired,
   }
+  const formikRef = useRef()
 
   const handleSubmit = async (values) => {
+    const formik = formikRef.current
+
     const { username, email, password, country } = values
     try {
       const submission = { username, email, password, country }
       const result = await axios.post("/api/auth/signup", submission, {
         "Content-Type": "application/x-www-form-urlencoded",
       })
+
+      formik.setSubmitting(false)
+      dispatch({ type: "TOGGLE_MODAL" })
+      dispatch({ type: "TOGGLE_MODAL", modal: "login" })
+
       console.log(result)
     } catch (error) {
+      formik.setSubmitting(false)
+
       console.log(error)
     }
   }
@@ -43,6 +53,7 @@ const SignUpForm = () => {
     <div className={styles.container}>
       <h2 className={styles.header}>Sign up</h2>
       <Formik
+        innerRef={formikRef}
         initialValues={{
           username: "",
           password: "",
@@ -53,7 +64,7 @@ const SignUpForm = () => {
         validationSchema={Yup.object(validationSchema)}
         onSubmit={handleSubmit}
       >
-        {() => (
+        {({ isSubmitting }) => (
           <Form className={styles.form}>
             <TextInput
               label="Username"
@@ -100,7 +111,7 @@ const SignUpForm = () => {
                 type="button"
                 onClick={handleCancel}
               />{" "}
-              <Button type="submit" text="Submit" />
+              <Button disabled={isSubmitting} type="submit" text="Submit" />{" "}
             </div>
           </Form>
         )}

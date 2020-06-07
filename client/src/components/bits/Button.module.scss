@@ -36,3 +36,14 @@
     border: 1px solid $color-blue;
   }
 }
+
+.buttonDisabled {
+  @extend .button;
+  background-color: $color-grey;
+  &:hover,
+  &:focus {
+    background-color: $color-grey;
+    border: 1px solid transparent;
+    color: $color-white;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useEffect } from "react"
+import React, { useReducer, createContext } from "react"
 import { TYPES } from "./types"
 const initialState = {
   modal: false,
@@ -38,6 +38,7 @@ const initialState = {
   languageFilter: "",
   titleFilter: "",
   authorFilter: "",
+  deletionTarget: "",
 }
 export const AppContext = createContext(initialState)
 
@@ -113,8 +114,8 @@ const AppContextProvider = ({ children }) => {
       case TYPES.SET_TRADES_SORT:
         return {
           ...state,
-          tradesSort: action.sort,
-          trades: action.sortedTrades,
+          tradesSort: action.data.sortParam,
+          trades: action.data.sortedTrades,
         }
       case TYPES.TOGGLE_IS_ADDING:
         return {
@@ -140,6 +141,11 @@ const AppContextProvider = ({ children }) => {
         return {
           ...state,
           authorFilter: action.author,
+        }
+      case TYPES.SET_DELETION_TARGET:
+        return {
+          ...state,
+          deletionTarget: action.target,
         }
       default:
         return state

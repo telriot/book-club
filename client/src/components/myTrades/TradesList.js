@@ -20,7 +20,16 @@ function TradesList(props) {
     })
     history.push(`/confirm/${id}`)
   }
-
+  const handleCancel = (id) => async () => {
+    console.log("cancel request")
+    try {
+      const response = await axios.post(`/api/requests/cancel`, { id })
+      console.log(response.data)
+      refreshTrades()
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const handleDecline = (id) => async () => {
     console.log("decline request")
     try {
@@ -45,7 +54,7 @@ function TradesList(props) {
         </td>
         <td>{moment(date).fromNow()}</td>
         <td className={styles.thumbIcons}>
-          {status === "pending" ? (
+          {status === "pending" && inOut === "in" ? (
             <>
               <MdThumbUp
                 className={styles.thumbIcon}
@@ -56,39 +65,36 @@ function TradesList(props) {
                 onClick={handleDecline(_id)}
               />
             </>
+          ) : status === "pending" && inOut === "out" ? (
+            <span onClick={handleCancel(_id)} className={styles.cancelRequest}>
+              Cancel
+            </span>
           ) : null}
         </td>
-
-        {/*}
-        {inOut === "in" && status === "pending" ? (
-          <div>
-            <button onClick={handleDecline(_id)}>Decline</button>
-            <button onClick={handleAccept(_id, author, receiver, bookIn)}>
-              Pick a trade
-            </button>
-          </div>
-        ) : null}*/}
       </tr>
     )
   }
   return (
-    <table className={styles.table}>
-      <thead className={inOut === "out" ? styles.headerAlt : styles.header}>
-        <tr>
-          <th className={styles.col1}>Book</th>
-          <th className={styles.col2}>Status</th>
-          <th className={styles.col3}>User</th>
-          <th className={styles.col4}>Date</th>
-          <th className={styles.col5}>Action</th>
-        </tr>
-      </thead>
-      <tbody className={styles.body}>
-        {data &&
-          data.map((request, index) => (
-            <TradeRequest key={`request-${inOut}-${index}`} data={request} />
-          ))}
-      </tbody>
-    </table>
+    <>
+      <table className={styles.table}>
+        <thead className={inOut === "out" ? styles.headerAlt : styles.header}>
+          <tr>
+            <th className={styles.col1}>Book</th>
+            <th className={styles.col2}>Status</th>
+            <th className={styles.col3}>User</th>
+            <th className={styles.col4}>Date</th>
+            <th className={styles.col5}>Action</th>
+          </tr>
+        </thead>
+        <tbody className={styles.body}>
+          {data &&
+            data.map((request, index) => (
+              <TradeRequest key={`request-${inOut}-${index}`} data={request} />
+            ))}
+        </tbody>
+        {!data.length ? <td className={styles.error}>No trades yet</td> : null}
+      </table>
+    </>
   )
 }
 

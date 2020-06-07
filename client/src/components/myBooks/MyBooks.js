@@ -5,7 +5,6 @@ import BookCard from "../shared/BookCard"
 import FindBooks from "../findBooks/FindBooks"
 import Pagination from "../bits/Pagination"
 import SideBar from "../layout/SideBar"
-
 import styles from "./MyBooks.module.scss"
 import axios from "axios"
 
@@ -20,7 +19,6 @@ function MyBooks() {
 
     try {
       const response = await axios.get(`/api/books/${authState.username}`)
-
       data.books = response.data
       data.totalResults = response.data.length
       data.totalPages = Math.ceil(response.data.length / maxResults)
@@ -34,6 +32,7 @@ function MyBooks() {
     }
   }
   useEffect(() => {
+    window.scrollTo(0, 0)
     authState.username && getMyBooks()
   }, [authState, isAdding])
 

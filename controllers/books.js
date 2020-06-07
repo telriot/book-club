@@ -1,5 +1,6 @@
 const Book = require("../models/Book")
 const User = require("../models/User")
+const Request = require("../models/Request")
 module.exports = {
   async getBooks(req, res, next) {
     const { page, limit, language, title, author, sortOrder } = req.query
@@ -36,25 +37,9 @@ module.exports = {
     res.send(user.books)
   },
 
-  /*async getMyLatestEntries(req, res, next) {
-    const { username } = req.params
-    const { limit } = req.query
-    const user = await User.findOne({ username })
-
-    let findLatestEntries = (arr) => {
-      let books = []
-      const startIndex = arr.length - 1
-      const endIndex = arr.length - limit - 1
-      for (let i = startIndex; i > endIndex; i--) {
-        arr[i] && books.push(arr[i])
-      }
-      return books
-    }
-    res.send(findLatestEntries(user.books))
-  },*/
-
   async getBookDetail(req, res, next) {
     const { googleId } = req.params
+    console.log(googleId)
     const book = await Book.findOne({ googleId }).populate("users").exec()
     res.send(book)
   },
@@ -90,8 +75,26 @@ module.exports = {
     const { username } = req.params
     const { googleId } = req.query
 
-    let user = await User.findOne({ username })
+    let user = await User.findOne({ username }).populate("requestsIn").exec()
     let book = await Book.findOne({ googleId })
+
+    let findPendingRequest = (arr) => {
+      for (let i = 0; i < arr.length; i++) {
+        if (
+          arr[i].bookIn.googleId === googleId &&
+          arr[i].status === "pending"
+        ) {
+          return arr[i]._id
+        }
+      }
+    }
+    let pendingRequest = findPendingRequest(user.requestsIn)
+    if (pendingRequest) {
+      await Request.findByIdAndUpdate(pendingRequest, {
+        status: "declined",
+      })
+    }
+
     for (let i = 0; i < user.books.length; i++) {
       if (user.books[i].googleId === googleId) {
         user.books.splice(i, 1)

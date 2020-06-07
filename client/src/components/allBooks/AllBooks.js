@@ -1,15 +1,15 @@
 import React, { useContext, useEffect } from "react"
 import { AppContext } from "../../contexts/AppContext"
+import useDebounce from "../../hooks/useDebounce"
 import BookCard from "../shared/BookCard"
+import Pagination from "../bits/Pagination"
+import SideBar from "../layout/SideBar"
 import styles from "./AllBooks.module.scss"
 import axios from "axios"
-import SideBar from "../layout/SideBar"
-import Pagination from "../bits/Pagination"
-import useDebounce from "../../hooks/useDebounce"
 
 function AllBooks() {
   const { state, dispatch } = useContext(AppContext)
-  const { page, pages, maxResults, books } = state
+  const { page, pages, maxResults, books, languageFilter, sortOrder } = state
   const debouncedTitle = useDebounce(state.titleFilter, 500)
   const debouncedAuthor = useDebounce(state.authorFilter, 500)
 
@@ -19,17 +19,18 @@ function AllBooks() {
       const params = {
         page,
         limit: maxResults,
-        language: state.languageFilter,
+        language: languageFilter,
         title: debouncedTitle,
         author: debouncedAuthor,
-        sortOrder: state.sortOrder,
+        sortOrder: sortOrder,
       }
       const response = await axios.get("/api/books/", { params })
-      data.books = response.data.docs
-      data.totalResults = response.data.totalDocs
-      data.totalPages = response.data.totalPages
-      if (page > response.data.totalPages) {
-        dispatch({ type: "SET_PAGE", page: response.data.totalPages })
+      const { docs, totalDocs, totalPages } = response.data
+      data.books = docs
+      data.totalResults = totalDocs
+      data.totalPages = totalPages
+      if (page > totalPages) {
+        dispatch({ type: "SET_PAGE", page: totalPages })
       }
       dispatch({ type: "SET_BOOKS", data })
     } catch (error) {
@@ -40,7 +41,7 @@ function AllBooks() {
 
   useEffect(() => {
     getAllBooks()
-  }, [page, state.languageFilter, state.sortOrder])
+  }, [page, languageFilter, sortOrder])
   useEffect(() => {
     if (debouncedTitle || (!debouncedTitle && books.length !== 0)) getAllBooks()
   }, [debouncedTitle])
@@ -49,6 +50,7 @@ function AllBooks() {
       getAllBooks()
   }, [debouncedAuthor])
   useEffect(() => {
+    window.scrollTo(0, 0)
     dispatch({ type: "SET_PAGE", page: 1 })
   }, [])
 

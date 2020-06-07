@@ -46,6 +46,7 @@ function NewBook() {
   useEffect(() => {
     searchTerm.length > 2 && findBooks()
   }, [searchTerm])
+
   useEffect(() => {
     if (languageFilter && searchTerm.length > 2) {
       searchDispatch({ type: "SET_PAGE", page: 1 })
@@ -53,6 +54,7 @@ function NewBook() {
       searchDispatch({ type: "SET_DISPLAY", display: true })
     }
   }, [languageFilter])
+
   useEffect(() => {
     if (searchState.page && searchTerm.length > 2) {
       findBooks()

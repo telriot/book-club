@@ -8,6 +8,7 @@
   justify-self: center;
   table-layout: fixed;
   border-collapse: collapse;
+  position: relative;
 }
 .header {
   th {
@@ -21,7 +22,20 @@
   }
 }
 .col1 {
-  width: 60%;
+}
+.col2 {
+  width: 7rem;
+}
+.col3 {
+  width: 7rem;
+}
+.col4 {
+  width: 7rem;
+}
+.col5 {
+  text-align: center !important;
+  width: 15%;
+  min-width: 10rem;
 }
 .body {
 }
@@ -37,7 +51,8 @@
   &:hover,
   &:focus {
     background: rgba($color-blue, 0.07);
-    .thumbIcon {
+    .thumbIcon,
+    .cancelRequest {
       visibility: visible;
     }
   }
@@ -79,4 +94,23 @@
   &:focus {
     fill: $color-red;
   }
+}
+.cancelRequest {
+  font-size: 1.3rem;
+  visibility: hidden;
+  color: $color-grey;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: $color-red;
+  }
+}
+.error {
+  position: absolute;
+  top: 8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 1.5rem;
 }

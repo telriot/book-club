@@ -27,8 +27,8 @@
 }
 .button {
   display: block;
-  border: none;
   width: 14rem;
+  border: none;
   padding: 0.4rem 1.2rem;
   margin: 0.8rem 0;
   background-color: transparent;
@@ -53,6 +53,6 @@
   }
 }
 .buttonActiveAlt {
-  @extend .buttonActive;
+  @extend .buttonAlt;
   color: $color-blue;
 }

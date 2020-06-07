@@ -14,12 +14,12 @@ function MyTrades() {
     try {
       const response = await axios.get(`/api/requests/${authState.username}`)
       const { requestsIn, requestsOut } = response.data
-      console.log(response.data)
       dispatch({ type: "SET_TRADES", trades: { requestsIn, requestsOut } })
     } catch (error) {}
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     authState.username && getMyTrades()
     return () => {
       dispatch({ type: "RESET_BOOK_DETAIL" })

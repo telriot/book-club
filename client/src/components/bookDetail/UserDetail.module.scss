@@ -4,18 +4,19 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  transition: all 0.2s;
   padding: 0.5rem;
+  box-shadow: $box-shadow-2;
+  transition: all 0.2s;
 
   &:hover,
   &:focus {
-    background-color: rgba($color-rich-black, 0.05);
+    background-color: rgba($color-rich-black, 0.02);
     button {
       color: $color-red;
     }
   }
-  box-shadow: $box-shadow-2;
 }
+
 .user {
   display: flex;
   align-items: center;
@@ -23,22 +24,19 @@
   padding: 0.2rem;
 }
 .username {
-  font-size: 1.6rem;
   margin-right: 0.4rem;
+  font-size: 1.6rem;
   color: $color-black;
   text-decoration: none;
 }
 .button {
   display: block;
   border: none;
-  padding: 0.6rem 2.6rem;
-  border-radius: 2px;
+  padding: 0.6rem;
   background-color: transparent;
   color: $color-black;
   letter-spacing: 0.1rem;
   font-size: 1.3rem;
-  font-weight: 400;
   text-transform: uppercase;
-
   transition: all 0.2s;
 }

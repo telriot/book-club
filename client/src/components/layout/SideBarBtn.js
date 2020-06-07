@@ -9,7 +9,6 @@ function SideBarBtn(props) {
   const { state, dispatch } = useContext(AppContext)
   const { searchState, searchDispatch } = useContext(SearchContext)
   const { books, isAdding, inOut } = state
-  const { requestsOut, requestsIn } = state.trades
   const { displayedResults } = searchState
 
   const handleSort = (sortParam, books, search) => () => {
@@ -70,11 +69,20 @@ function SideBarBtn(props) {
       })
     }
 
-    dispatch({ type: "SET_TRADES_SORT", sortedTrades: tradesCopy })
+    dispatch({
+      type: "SET_TRADES_SORT",
+      data: { sortedTrades: tradesCopy, sortParam },
+    })
   }
   const btnClassName = (name) => {
-    if (myTrades && inOut === "in") {
-      return state.sort === name ? styles.buttonActiveAlt : styles.buttonAlt
+    if (myTrades) {
+      if (inOut === "in") {
+        return state.tradesSort === param
+          ? styles.buttonActiveAlt
+          : styles.buttonAlt
+      } else {
+        return state.tradesSort === param ? styles.buttonActive : styles.button
+      }
     } else {
       return state.sort === name ? styles.buttonActive : styles.button
     }

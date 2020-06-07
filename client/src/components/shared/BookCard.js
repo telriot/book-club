@@ -19,7 +19,6 @@ function BookCard(props) {
     if (username) {
       try {
         const response = await axios.post(`/api/books/${username}`, item)
-        console.log(response)
         response.data.books &&
           dispatch({ type: "SET_BOOKS", data: { books: response.data.books } })
       } catch (error) {
@@ -31,19 +30,8 @@ function BookCard(props) {
   }
 
   const handleRemove = async () => {
-    if (username) {
-      try {
-        const response = await axios.delete(`/api/books/${username}`, {
-          params: { googleId: item.googleId },
-        })
-        const books = response.data
-        dispatch({ type: "SET_BOOKS", data: { books } })
-      } catch (error) {
-        console.log(error)
-      }
-    } else {
-      console.log("Authentication required")
-    }
+    dispatch({ type: "SET_DELETION_TARGET", target: item.googleId })
+    dispatch({ type: "TOGGLE_MODAL", modal: "delete" })
   }
 
   const handleOwners = () => {
@@ -71,12 +59,14 @@ function BookCard(props) {
   })
   return (
     <div ref={cardRef} className={styles.card}>
-      <div className={styles.imageDiv}>
+      <div
+        className={addBtn ? styles.imageDivAdd : styles.imageDiv}
+        onClick={addBtn ? handleAdd : handleOwners}
+      >
         <img
           className={styles.image}
           src={imageLinks ? imageLinks.thumbnail : coverBlank}
           alt="Book Cover"
-          onClick={handleOwners}
         />
       </div>
 
