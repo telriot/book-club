@@ -17,57 +17,60 @@ import MyTrades from "./myTrades/MyTrades"
 import UserPublic from "./userPublic/UserPublic"
 import ConfirmationScreen from "./confirmationScreen/ConfirmationScreen"
 import ConfirmDeletion from "./shared/ConfirmDeletion"
+import WindowSizeContextProvider from "../contexts/WindowSizeContext"
 
 function App() {
   const { state } = useContext(AppContext)
   return (
     <React.Fragment>
       <SearchContextProvider>
-        <Route exact path="/*">
-          <Navbar />
-        </Route>
-        <div className={styles.container}>
-          <Switch>
-            <Route exact path="/">
-              <Landing />
-            </Route>
-            <Route exact path="/books">
-              <AllBooks />
-            </Route>
+        <WindowSizeContextProvider>
+          <Route exact path="/*">
+            <Navbar />
+          </Route>
+          <div className={styles.container}>
+            <Switch>
+              <Route exact path="/">
+                <Landing />
+              </Route>
+              <Route exact path="/books">
+                <AllBooks />
+              </Route>
 
-            <Route exact path="/my-books">
-              <MyBooks />
-            </Route>
-            <Route exact path="/find-books">
-              <FindBooks />
-            </Route>
-            <Route exact path="/my-profile">
-              <MyProfile />
-            </Route>
-            <Route exact path="/book/:googleId">
-              <BookDetail />
-            </Route>
-            <Route exact path="/my-trades">
-              <MyTrades />
-            </Route>
-            <Route exact path="/users/:username">
-              <UserPublic />
-            </Route>
-            <Route exact path="/confirm/:requestId">
-              <ConfirmationScreen />
-            </Route>
-          </Switch>
-        </div>
+              <Route exact path="/my-books">
+                <MyBooks />
+              </Route>
+              <Route exact path="/find-books">
+                <FindBooks />
+              </Route>
+              <Route exact path="/my-profile">
+                <MyProfile />
+              </Route>
+              <Route exact path="/book/:googleId">
+                <BookDetail />
+              </Route>
+              <Route exact path="/my-trades">
+                <MyTrades />
+              </Route>
+              <Route exact path="/users/:username">
+                <UserPublic />
+              </Route>
+              <Route exact path="/confirm/:requestId">
+                <ConfirmationScreen />
+              </Route>
+            </Switch>
+          </div>
 
-        <Modal>
-          {state.modal === "login" ? (
-            <LogInForm />
-          ) : state.modal === "signup" ? (
-            <SignUpForm />
-          ) : state.modal === "delete" ? (
-            <ConfirmDeletion />
-          ) : null}
-        </Modal>
+          <Modal>
+            {state.modal === "login" ? (
+              <LogInForm />
+            ) : state.modal === "signup" ? (
+              <SignUpForm />
+            ) : state.modal === "delete" ? (
+              <ConfirmDeletion />
+            ) : null}
+          </Modal>
+        </WindowSizeContextProvider>
       </SearchContextProvider>
     </React.Fragment>
   )

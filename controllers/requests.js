@@ -62,7 +62,6 @@ module.exports = {
     }
   },
   async acceptRequest(req, res, next) {
-    console.log("accepted")
     const { bookIn, bookOut, tradeId, authorId, receiverId } = req.body
 
     //Remove book from trade author bookshelf

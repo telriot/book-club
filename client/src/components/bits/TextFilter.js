@@ -2,16 +2,30 @@ import React from "react"
 import styles from "./TextFilter.module.scss"
 
 const TextFilter = (props) => {
-  const { handleChange, value, placeholder, label, name } = props
+  const { handleChange, value, placeholder, label, name, size } = props
 
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={
+        size === "small"
+          ? styles.wrapperSm
+          : size === "xs"
+          ? styles.wrapperXs
+          : styles.wrapper
+      }
+    >
       <label className={styles.label} htmlFor={props.id || props.name}>
         {props.labelShow && label}
       </label>{" "}
       <input
         type="text"
-        className={styles.input}
+        className={
+          size === "small"
+            ? styles.inputSm
+            : size === "xs"
+            ? styles.inputXs
+            : styles.input
+        }
         name={name}
         placeholder={placeholder}
         value={value}

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
+
 import { Link } from "react-router-dom"
 import styles from "./UserDetail.module.scss"
 import "../../styles/flags.css"
@@ -16,6 +17,7 @@ function UserDetail(props) {
   const { user, index } = props
 
   const handleRequest = (receiver) => async () => {
+    if (isSubmitting) return
     try {
       setSubmitting(true)
       const requestObject = {
@@ -53,7 +55,10 @@ function UserDetail(props) {
     <div
       className={styles.wrapper}
       onClick={
-        user.username !== authState.username ? handleRequest(user) : null
+        user.username !== authState.username &&
+        !isAlreadySubmitted(googleId, user)
+          ? handleRequest(user)
+          : null
       }
     >
       <div className={styles.user} key={`userDiv-${index}`}>

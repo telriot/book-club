@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from "react"
+import { useHistory } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
 import Button from "../bits/Button"
@@ -12,6 +13,7 @@ import axios from "axios"
 const LogInForm = () => {
   const { dispatch } = useContext(AppContext)
   const { authDispatch } = useContext(AuthContext)
+  const history = useHistory()
   const validationSchema = {
     username: validators.username,
     password: validators.password,
@@ -34,6 +36,7 @@ const LogInForm = () => {
       formik.setSubmitting(false)
 
       dispatch({ type: "TOGGLE_MODAL" })
+      history.push("/books")
     } catch (error) {
       formik.setSubmitting(false)
 

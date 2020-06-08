@@ -3,10 +3,23 @@
 
 .container {
   @include main-grid;
+  @include respond("md") {
+    grid-template-columns: [left-gutter-start]1fr [ main-start] 2fr[main-end right-gutter-end];
+  }
+  @include respond("xs") {
+    display: flex;
+    flex-direction: column;
+  }
 }
 .sideBar {
   @include sidebar;
   margin-right: 3rem;
+  @include respond("md") {
+    margin-right: 1rem;
+    display: flex;
+    grid-column: 1/2;
+    grid-row: 2/3;
+  }
 }
 
 .main {
@@ -17,6 +30,16 @@
   grid-template-rows: 10rem 1fr;
   align-items: flex-start;
   gap: 2rem;
+  @include respond("lg") {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @include respond("md") {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include respond("xs") {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
 }
 .mainHeader {
   grid-row: 1/2;
@@ -25,4 +48,7 @@
   text-align: center;
   align-self: center;
   letter-spacing: 0.2rem;
+  @include respond("xs") {
+    display: none;
+  }
 }

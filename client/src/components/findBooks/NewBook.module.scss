@@ -1,9 +1,16 @@
 @import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
 .container {
   grid-row: top-gutter-start/main-start;
   grid-column: main-start/main-end;
   align-self: flex-end;
+  justify-self: center;
   display: flex;
-  max-width: 40rem;
+  width: 60%;
   margin-bottom: 1.5rem;
+  @include respond("sm") {
+    grid-column: left-gutter-start/right-gutter-end;
+    width: 80%;
+  }
 }

@@ -1,0 +1,19 @@
+[
+  {
+    "code": "title",
+    "name": "Title"
+  },
+
+  {
+    "code": "status",
+    "name": "Status"
+  },
+  {
+    "code": "username",
+    "name": "User"
+  },
+  {
+    "code": "date",
+    "name": "Date"
+  }
+]

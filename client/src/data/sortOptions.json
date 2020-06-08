@@ -1,0 +1,23 @@
+[
+  {
+    "code": "",
+    "name": "Any Order"
+  },
+
+  {
+    "code": "latest",
+    "name": "Latest entries"
+  },
+  {
+    "code": "alphabetical",
+    "name": "Author A-Z"
+  },
+  {
+    "code": "length",
+    "name": "Pages"
+  },
+  {
+    "code": "year",
+    "name": "Published Date"
+  }
+]

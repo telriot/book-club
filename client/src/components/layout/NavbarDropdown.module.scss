@@ -1,0 +1,66 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
+.navCollapsible {
+  position: fixed;
+  top: 6rem;
+  right: 0px;
+  height: 6rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background: $color-blue;
+  transition: all 0.3s;
+  @include respond("xs") {
+    flex-direction: column;
+    height: max-content;
+    padding: 1.5rem;
+  }
+}
+.navCollapsed {
+  position: fixed;
+  top: 6rem;
+  right: 0px;
+  width: 0%;
+  height: 0px;
+  opacity: 0;
+  transition: all 0.3s;
+}
+.navBottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.navItem {
+  width: 100%;
+  font-size: 1.4rem;
+  border: none;
+  padding: 0.8rem 0.8rem;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+  background: transparent;
+  text-align: center;
+
+  &:hover {
+    background-color: rgba($color-rich-black, 0.05);
+  }
+  &:focus {
+    box-shadow: $box-shadow-1;
+  }
+}
+.navItemText {
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2rem;
+  color: $color-white;
+  transition: all 0.2s;
+}
+.selector {
+  cursor: pointer;
+}
+.selectorAlt {
+  cursor: pointer;
+}

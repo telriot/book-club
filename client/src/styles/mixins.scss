@@ -1,8 +1,35 @@
+$breakpoints: (
+  xl: 87.5em,
+  lg: 75em,
+  md: 62em,
+  sm: 48em,
+  xs: 36em,
+  xxs: 22.25em,
+);
+@mixin respond($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+
+    @media (max-width: $breakpoint-value) {
+      @content;
+    }
+  } @else {
+    @warn 'Invalid breakpoint: #{$breakpoint}.';
+  }
+}
+
 @mixin main-grid {
   display: grid;
   grid-template-rows: [top-gutter-start]8rem [top-gutter-end main-start]1fr[main-end pagination-start]5rem[pagination-end];
   grid-template-columns: [left-gutter-start]6vw [left-gutter-end sidebar-start]30rem[sidebar-end main-start] 1fr[main-end right-gutter-start]8vw[right-gutter-end];
+  @media (max-width: 87.5em) {
+    grid-template-columns: [left-gutter-start]1vw[left-gutter-end sidebar-start]30rem[sidebar-end main-start] 1fr[main-end right-gutter-start]1vw[right-gutter-end];
+  }
+  @media (max-width: 62em) {
+    grid-template-columns: [left-gutter-start]1fr [ main-start] 1fr[main-end right-gutter-start]1fr[right-gutter-end];
+  }
 }
+
 @mixin main-books {
   grid-column: main-start/main-end;
   grid-row: main-start/main-end;
@@ -10,6 +37,16 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 4rem;
   margin-bottom: 3rem;
+  @media (max-width: 75em) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: 48em) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 36em) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
 }
 @mixin sidebar {
   grid-column: sidebar-start/sidebar-end;
@@ -20,6 +57,9 @@
   align-items: center;
   padding-top: 3rem;
   margin-right: 2rem;
+  @media (max-width: 62em) {
+    display: none;
+  }
 }
 @mixin modal-form-container {
   display: flex;
@@ -27,4 +67,7 @@
   justify-content: space-between;
   width: 36rem;
   padding: 0.5rem 2rem;
+  @media (max-width: 36em) {
+    width: 28rem;
+  }
 }

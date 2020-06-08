@@ -22,13 +22,17 @@ const MyProfile = () => {
   }
 
   const handleSubmit = async (values) => {
+    const formik = formikRef.current
+
     try {
       const results = await axios.put(
         `/api/users/${authState.username}`,
         values
       )
+      formik.setSubmitting(false)
       console.log(results.data)
     } catch (error) {
+      formik.setSubmitting(false)
       console.log(error)
     }
   }
@@ -66,7 +70,7 @@ const MyProfile = () => {
         validationSchema={Yup.object(validationSchema)}
         onSubmit={handleSubmit}
       >
-        {({ values }) => (
+        {({ values, isSubmitting }) => (
           <Form className={styles.form}>
             <TextInput
               label="First Name"
@@ -98,7 +102,7 @@ const MyProfile = () => {
               placeholder="Your city"
             />
             <div className={styles.btnDiv}>
-              <Button type="submit" text="Update" />
+              <Button disabled={isSubmitting} type="submit" text="Update" />
             </div>
           </Form>
         )}

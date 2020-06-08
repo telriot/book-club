@@ -1,30 +1,25 @@
-import React, { useContext } from "react"
-import { Link, useHistory } from "react-router-dom"
+import React, { useContext, useState } from "react"
+import { Link } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
 import styles from "./Navbar.module.scss"
-import axios from "axios"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
+import NavbarDropdown from "./NavbarDropdown"
 
 function Navbar() {
   const { dispatch } = useContext(AppContext)
-  const { authState, authDispatch } = useContext(AuthContext)
+  const { authState, handleLogout } = useContext(AuthContext)
+  const { isXS, isSM, isMD, isLG } = useContext(WindowSizeContext)
   const { username } = authState
-  const history = useHistory()
+  const [isOpen, setOpen] = useState(false)
 
   const handleModal = (e) => {
     e.persist()
     dispatch({ type: "TOGGLE_MODAL", modal: e.target.name })
   }
 
-  const handleLogout = async () => {
-    try {
-      const result = await axios.post("/api/auth/logout")
-      authDispatch({ type: "LOGOUT_USER" })
-      history.push("/")
-      console.log(result)
-    } catch (error) {
-      console.log(error)
-    }
+  const toggleHamburger = () => {
+    setOpen((prevState) => (prevState ? false : true))
   }
 
   return (
@@ -32,7 +27,7 @@ function Navbar() {
       <header className={styles.header}>
         <h1>
           <Link className={styles.brand} to="/">
-            Book Club
+            {isLG ? "Book Club" : "BC"}
           </Link>
         </h1>
         <nav className={styles.nav}>
@@ -89,7 +84,7 @@ function Navbar() {
               </>
             )}
           </ul>
-          {username ? (
+          {username && isSM ? (
             <ul className={styles.navRight}>
               <li className={styles.navItem}>
                 <Link
@@ -97,7 +92,7 @@ function Navbar() {
                   name="my-profile"
                   to="/my-profile"
                 >
-                  {authState.username}'s Profile
+                  My Profile
                 </Link>
               </li>
               <li className={styles.navItem}>
@@ -111,6 +106,26 @@ function Navbar() {
                 </Link>
               </li>
             </ul>
+          ) : null}
+          {!isLG ? (
+            <>
+              <div className={styles.hamburger}>
+                <button
+                  onClick={toggleHamburger}
+                  className={
+                    isOpen
+                      ? "hamburger hamburger--slider is-active"
+                      : "hamburger hamburger--slider"
+                  }
+                  type="button"
+                >
+                  <span className="hamburger-box">
+                    <span className="hamburger-inner"></span>
+                  </span>
+                </button>
+              </div>
+              <NavbarDropdown isOpen={isOpen} />
+            </>
           ) : null}
         </nav>
       </header>

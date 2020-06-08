@@ -2,16 +2,18 @@
 @import "../../styles/mixins.scss";
 .container {
   @include main-grid;
+  @include respond("md") {
+    grid-template-rows: [title-row]8rem[top-gutter-start]8rem [top-gutter-end main-start]1fr[main-end pagination-start]5rem[pagination-end];
+  }
 }
 .main {
   @include main-books;
 }
-.sideBar {
-  grid-column: sidebar-start/sidebar-end;
-  grid-row: main-start/main-end;
+.header {
+  grid-column: left-gutter-start/right-gutter-end;
+  grid-row: title-row/top-gutter-start;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding-top: 3rem;
+  justify-content: center;
+  align-items: flex-end;
+  font-size: 2rem;
 }

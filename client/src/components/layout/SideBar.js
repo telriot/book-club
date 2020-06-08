@@ -7,58 +7,23 @@ import SelectFilter from "../bits/SelectFilter"
 import { SearchContext } from "../../contexts/SearchContext"
 import TextFilter from "../bits/TextFilter"
 import languages from "../../data/languages.json"
+import sortOptions from "../../data/sortOptions.json"
+import sortOptionsMyBooks from "../../data/sortOptionsMyBooks.json"
+import sortOptionsTrades from "../../data/sortOptionsTrades.json"
 
 function SideBar(props) {
-  const { state, dispatch } = useContext(AppContext)
-  const { searchState, searchDispatch } = useContext(SearchContext)
+  const { state, dispatch, handleFilter, handleInOut } = useContext(AppContext)
+  const { searchState, searchDispatch, handleFilterNewBook } = useContext(
+    SearchContext
+  )
   const { myBooks, trades, findBooks, allBooks } = props
   const { inOut } = state
 
-  const sortOptions = [
-    {
-      code: "",
-      name: "Any Order",
-    },
-
-    {
-      code: "latest",
-      name: "Latest entries",
-    },
-    {
-      code: "alphabetical",
-      name: "Author A-Z",
-    },
-    {
-      code: "length",
-      name: "Pages",
-    },
-    {
-      code: "year",
-      name: "Published Date",
-    },
-  ]
   const handleNewBook = () => {
     dispatch({ type: "TOGGLE_IS_ADDING" })
     searchDispatch({ type: "RESET_RESULTS" })
   }
-  const handleInOut = () => {
-    dispatch({ type: "TOGGLE_IN_OUT" })
-  }
-  const handleFilterNewBook = (value) => {
-    searchDispatch({ type: "SET_LANGUAGE_FILTER", language: value })
-  }
-  const handleFilterAllBooks = (value) => {
-    dispatch({ type: "SET_LANGUAGE_FILTER", language: value })
-  }
-  const handleTitleFilter = (value) => {
-    dispatch({ type: "SET_TITLE_FILTER", title: value })
-  }
-  const handleAuthorFilter = (value) => {
-    dispatch({ type: "SET_AUTHOR_FILTER", author: value })
-  }
-  const handleSortOrder = (sortOrder) => {
-    dispatch({ type: "SET_SORT_SERVER_SIDE", sortOrder })
-  }
+
   return (
     <div className={styles.container}>
       {trades ? (
@@ -73,10 +38,14 @@ function SideBar(props) {
             </h2>
           )}
           <h2 className={styles.header}>Sort by</h2>
-          <SideBarBtn myTrades={true} text="Title" param="title" />
-          <SideBarBtn myTrades={true} text="Status" param="status" />
-          <SideBarBtn myTrades={true} text="User" param="username" />
-          <SideBarBtn myTrades={true} text="Date" param="date" />
+          {sortOptionsTrades.map((option, index) => (
+            <SideBarBtn
+              key={`btn-${index}`}
+              myTrades={true}
+              text={option.name}
+              param={option.code}
+            />
+          ))}
         </>
       ) : myBooks ? (
         <>
@@ -85,11 +54,13 @@ function SideBar(props) {
           </h2>
 
           <h2 className={styles.header}>Sort by</h2>
-          <SideBarBtn text="Title" param="title" />
-          <SideBarBtn text="Author" param="authors" />
-          <SideBarBtn text="Language" param="language" />
-          <SideBarBtn text="Genre" param="categories" />
-          <SideBarBtn text="Length" param="pageCount" />
+          {sortOptionsMyBooks.map((option, index) => (
+            <SideBarBtn
+              key={`btn-${index}`}
+              text={option.name}
+              param={option.code}
+            />
+          ))}
         </>
       ) : findBooks ? (
         <>
@@ -111,19 +82,19 @@ function SideBar(props) {
 
           <SelectFilter
             options={languages}
-            handleChange={handleFilterAllBooks}
+            handleChange={handleFilter.allBooks}
             value={state.languageFilter}
             placeholder="Pick a Language"
           />
           <TextFilter
-            handleChange={handleTitleFilter}
+            handleChange={handleFilter.titleFilter}
             value={state.titleFilter}
             placeholder="Filter by title"
             label="Title"
             name="titleFilter"
           />
           <TextFilter
-            handleChange={handleAuthorFilter}
+            handleChange={handleFilter.authorFilter}
             value={state.authorFilter}
             placeholder="Filter by author"
             label="Author"
@@ -131,7 +102,7 @@ function SideBar(props) {
           />
           <SelectFilter
             options={sortOptions}
-            handleChange={handleSortOrder}
+            handleChange={handleFilter.sortOrder}
             value={state.sortOrder}
             placeholder="Sort By"
           />

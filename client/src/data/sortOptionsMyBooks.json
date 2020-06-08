@@ -1,0 +1,23 @@
+[
+  {
+    "code": "title",
+    "name": "Title"
+  },
+
+  {
+    "code": "authors",
+    "name": "Author"
+  },
+  {
+    "code": "language",
+    "name": "Language"
+  },
+  {
+    "code": "categories",
+    "name": "Genre"
+  },
+  {
+    "code": "pageCount",
+    "name": "Length"
+  }
+]

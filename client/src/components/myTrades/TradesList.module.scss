@@ -2,13 +2,18 @@
 @import "../../styles/mixins.scss";
 
 .table {
-  width: 80%;
+  grid-column: 1 / -1;
+
+  width: 90%;
   height: max-content;
   margin-top: 4rem;
   justify-self: center;
   table-layout: fixed;
   border-collapse: collapse;
   position: relative;
+  @include respond("xs") {
+    width: 100%;
+  }
 }
 .header {
   th {
@@ -19,29 +24,50 @@
     padding: 1.2rem 0.6rem;
     border-bottom: 2px solid $color-blue;
     transition: all 0.2s;
+    @include respond("xs") {
+      font-size: 1.2rem;
+      letter-spacing: 0rem;
+      padding: 1rem 0.6rem;
+    }
   }
 }
 .col1 {
+  @include respond("xs") {
+    min-width: 9rem;
+  }
 }
 .col2 {
   width: 7rem;
+  @include respond("xs") {
+    width: 6rem;
+  }
 }
 .col3 {
   width: 7rem;
+  @include respond("xs") {
+    width: 6rem;
+  }
 }
 .col4 {
   width: 7rem;
+  @include respond("xs") {
+    display: none;
+  }
 }
 .col5 {
   text-align: center !important;
   width: 15%;
   min-width: 10rem;
+  @include respond("xs") {
+    width: 6.5rem;
+    min-width: 6.5rem;
+  }
 }
 .body {
 }
 .row {
   td {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     line-height: 2.2rem;
     padding: 0.9rem 0.6rem;
     overflow: hidden;

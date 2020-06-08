@@ -1,4 +1,5 @@
 import React, { useReducer, createContext, useEffect } from "react"
+import { useHistory } from "react-router-dom"
 import { TYPES } from "./types"
 import axios from "axios"
 
@@ -10,6 +11,7 @@ const initialState = {
 export const AuthContext = createContext(initialState)
 
 const AuthContextProvider = ({ children }) => {
+  const history = useHistory()
   const appReducer = (state, action) => {
     switch (action.type) {
       case TYPES.LOGIN_USER:
@@ -51,8 +53,18 @@ const AuthContextProvider = ({ children }) => {
     getAuth()
   }, [])
 
+  const handleLogout = async () => {
+    try {
+      const result = await axios.post("/api/auth/logout")
+      authDispatch({ type: "LOGOUT_USER" })
+      history.push("/")
+      console.log(result)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
-    <AuthContext.Provider value={{ authState, authDispatch }}>
+    <AuthContext.Provider value={{ authState, authDispatch, handleLogout }}>
       {children}
     </AuthContext.Provider>
   )

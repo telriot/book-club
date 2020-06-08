@@ -5,11 +5,13 @@ import SideBar from "../layout/SideBar"
 import TradesList from "./TradesList"
 import styles from "./MyTrades.module.scss"
 import axios from "axios"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 function MyTrades() {
-  const { state, dispatch } = useContext(AppContext)
+  const { state, dispatch, handleInOut } = useContext(AppContext)
   const { authState } = useContext(AuthContext)
   const { inOut } = state
+  const { isSM, isMD, isLG } = useContext(WindowSizeContext)
   const getMyTrades = async () => {
     try {
       const response = await axios.get(`/api/requests/${authState.username}`)
@@ -28,7 +30,17 @@ function MyTrades() {
 
   return (
     <div className={styles.container}>
-      <SideBar trades={true} />
+      {isLG ? (
+        <SideBar trades={true} />
+      ) : state.inOut === "in" ? (
+        <h2 className={styles.selectorAlt} onClick={handleInOut}>
+          Inbound Trades
+        </h2>
+      ) : (
+        <h2 className={styles.selector} onClick={handleInOut}>
+          Outbound Trades
+        </h2>
+      )}
       <div className={styles.main}>
         {inOut === "in" ? (
           <TradesList

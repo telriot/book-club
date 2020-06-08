@@ -49,6 +49,7 @@ function BookCard(props) {
     }
     try {
       const response = await axios.post(`/api/requests/accept`, acceptObject)
+      history.push("/my-trades")
       console.log(response.data)
     } catch (error) {
       console.log(error)

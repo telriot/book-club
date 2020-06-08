@@ -5,18 +5,27 @@ import Pagination from "../bits/Pagination"
 import SideBar from "../layout/SideBar"
 import { SearchContext } from "../../contexts/SearchContext"
 import styles from "./FindBooks.module.scss"
+import { AppContext } from "../../contexts/AppContext"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 function FindBooks() {
+  const { state, dispatch } = useContext(AppContext)
   const { searchState, searchDispatch } = useContext(SearchContext)
   const { page, pages, displayedResults } = searchState
+  const { isXS, isSM, isMD, isLG } = useContext(WindowSizeContext)
   const setPage = (page) => searchDispatch({ type: "SET_PAGE", page })
 
   useEffect(() => {
     searchDispatch({ type: "SET_PAGE", page: 1 })
+    return () =>
+      state.isAdding
+        ? dispatch({ type: "TOGGLE_IS_ADDING", close: true })
+        : null
   }, [])
   return (
     <div className={styles.container}>
-      <SideBar findBooks={true} />
+      {isMD ? <SideBar findBooks={true} /> : null}
+      {!isLG ? <h2 className={styles.header}>Add new books</h2> : null}
       <NewBook />
       <BookSearchResults />
       <Pagination

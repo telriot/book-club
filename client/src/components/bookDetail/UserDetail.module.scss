@@ -39,4 +39,7 @@
   font-size: 1.3rem;
   text-transform: uppercase;
   transition: all 0.2s;
+  @include respond("md") {
+    padding: 0.3rem;
+  }
 }

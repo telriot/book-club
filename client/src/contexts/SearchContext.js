@@ -75,9 +75,13 @@ const SearchContextProvider = ({ children }) => {
     }
   }
   const [searchState, searchDispatch] = useReducer(appReducer, initialState)
-
+  const handleFilterNewBook = (value) => {
+    searchDispatch({ type: "SET_LANGUAGE_FILTER", language: value })
+  }
   return (
-    <SearchContext.Provider value={{ searchState, searchDispatch }}>
+    <SearchContext.Provider
+      value={{ searchState, searchDispatch, handleFilterNewBook }}
+    >
       {children}
     </SearchContext.Provider>
   )

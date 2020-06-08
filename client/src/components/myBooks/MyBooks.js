@@ -13,7 +13,7 @@ function MyBooks() {
   const { isAdding } = state
   const { authState } = useContext(AuthContext)
   const { page, pages, maxResults, books } = state
-
+  const setPage = (page) => dispatch({ type: "SET_PAGE", page })
   const getMyBooks = async () => {
     let data = { books: [], totalResults: 0, totalPages: 0 }
 
@@ -34,9 +34,8 @@ function MyBooks() {
   useEffect(() => {
     window.scrollTo(0, 0)
     authState.username && getMyBooks()
+    return () => dispatch({ type: "SET_PAGE", page: 1 })
   }, [authState, isAdding])
-
-  const setPage = (page) => dispatch({ type: "SET_PAGE", page })
 
   const renderPage = (arr) => {
     let books = []

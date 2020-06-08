@@ -1,9 +1,15 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 .header {
   font-size: 2rem;
   margin-bottom: 1rem;
   text-align: center;
 }
-
+.imageLink {
+  @include respond("xs") {
+    margin-bottom: 2rem;
+  }
+}
 .author {
   margin-bottom: 2rem;
   text-align: center;

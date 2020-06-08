@@ -1,17 +1,26 @@
-import React, { useContext } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import styles from "./SideBar.module.scss"
 import { AppContext } from "../../contexts/AppContext"
 import { SearchContext } from "../../contexts/SearchContext"
 import { deepCopy } from "../../helpers/functions"
+import sortOptionsMyBooks from "../../data/sortOptionsMyBooks.json"
+import sortOptionsTrades from "../../data/sortOptionsTrades.json"
+import SelectFilter from "../bits/SelectFilter"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 function SideBarBtn(props) {
-  const { text, param, myTrades } = props
+  const { text, param, myTrades, dropdown } = props
   const { state, dispatch } = useContext(AppContext)
   const { searchState, searchDispatch } = useContext(SearchContext)
   const { books, isAdding, inOut } = state
   const { displayedResults } = searchState
+  const [selectSort, setSelectSort] = useState("")
+  const [selectSortTrades, setSelectSortTrades] = useState("")
+
+  const { isXS } = useContext(WindowSizeContext)
 
   const handleSort = (sortParam, books, search) => () => {
+    console.log(sortParam)
     let booksCopy = deepCopy(books)
     if (sortParam === "title" || sortParam === "language") {
       booksCopy.sort((a, b) => {
@@ -87,8 +96,33 @@ function SideBarBtn(props) {
       return state.sort === name ? styles.buttonActive : styles.button
     }
   }
-
-  return (
+  useEffect(() => {
+    if (selectSort) {
+      state.isAdding
+        ? handleSort(selectSort, books, true)()
+        : handleSort(selectSort, books)()
+    }
+  }, [selectSort])
+  useEffect(() => {
+    selectSortTrades && handleSortTrades(selectSortTrades, state.trades)()
+  }, [selectSortTrades])
+  return dropdown === "my-books" ? (
+    <SelectFilter
+      options={sortOptionsMyBooks}
+      handleChange={setSelectSort}
+      value={selectSort}
+      size={isXS ? "xs" : "small"}
+      placeholder="Sort Results"
+    />
+  ) : dropdown === "trades" ? (
+    <SelectFilter
+      options={sortOptionsTrades}
+      handleChange={setSelectSortTrades}
+      value={selectSort}
+      size={isXS ? "xs" : "small"}
+      placeholder="Sort Results"
+    />
+  ) : (
     <button
       onClick={
         myTrades

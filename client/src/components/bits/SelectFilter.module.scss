@@ -7,6 +7,14 @@
   margin-bottom: 3rem;
   position: relative;
 }
+.wrapperSm {
+  position: relative;
+}
+.wrapperXs {
+  margin-bottom: 1rem;
+  position: relative;
+  width: 100%;
+}
 .select {
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -45,4 +53,24 @@
   .select {
     padding: 0.8rem 0.4rem;
   }
+  .selectSm {
+    padding: 0.8rem 0rem;
+  }
+}
+.selectSm {
+  @extend .select;
+  font-size: 1.4rem;
+  font-weight: 400;
+  padding: 0.8rem 0.8rem;
+  margin-bottom: 0rem;
+
+  width: 10rem;
+  border-radius: 2px;
+  color: $color-white;
+}
+.selectXs {
+  @extend .select;
+  width: 100%;
+  font-size: 1.4rem;
+  color: $color-white;
 }

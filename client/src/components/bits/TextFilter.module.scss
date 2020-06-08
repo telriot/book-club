@@ -25,3 +25,28 @@
     box-shadow: $box-shadow-1;
   }
 }
+.wrapperSm {
+  margin-bottom: 0;
+  position: relative;
+}
+.inputSm {
+  @extend .input;
+  width: 12rem;
+  padding: 0.8rem 0.8rem;
+  margin-bottom: 0rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2rem;
+  text-align: center;
+  transition: all 0.2s;
+}
+.wrapperXs {
+  margin-bottom: 1rem;
+  width: 100%;
+  position: relative;
+}
+.inputXs {
+  @extend .input;
+  width: 100%;
+  font-size: 1.4rem;
+}

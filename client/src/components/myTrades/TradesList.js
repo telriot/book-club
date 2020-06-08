@@ -1,15 +1,21 @@
-import React, { useContext } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
+import Pagination from "../bits/Pagination"
 import styles from "./TradesList.module.scss"
 import axios from "axios"
 import moment from "moment"
 import { MdThumbUp, MdThumbDown } from "react-icons/md"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 function TradesList(props) {
   const { data, refreshTrades } = props
   const { state, dispatch } = useContext(AppContext)
+  const { isXS, isSM, isMD } = useContext(WindowSizeContext)
   const { inOut } = state
+  const [page, setPage] = useState(1)
+  const [pages, setPages] = useState(1)
+  const [maxResults, setMaxResults] = useState(10)
   const history = useHistory()
 
   const handleAccept = (id, author, receiver, bookIn) => async () => {
@@ -40,6 +46,22 @@ function TradesList(props) {
       console.log(error)
     }
   }
+
+  const renderPage = (arr) => {
+    let items = []
+    const startIndex = (page - 1) * maxResults
+    const endIndex = page * maxResults
+    for (let i = startIndex; i < endIndex; i++) {
+      arr[i] &&
+        items.push(<TradeRequest key={`request-${inOut}-${i}`} data={arr[i]} />)
+    }
+    return items
+  }
+
+  useEffect(() => {
+    setPage(1)
+    setPages(Math.ceil(data.length / maxResults))
+  }, [data])
   const TradeRequest = ({ data }) => {
     const { author, receiver, bookIn, status, date, _id } = data
 
@@ -52,7 +74,7 @@ function TradesList(props) {
         <td>
           {inOut === "in" ? `${author.username}` : `${receiver.username}`}
         </td>
-        <td>{moment(date).fromNow()}</td>
+        {isSM ? <td>{moment(date).fromNow()}</td> : null}
         <td className={styles.thumbIcons}>
           {status === "pending" && inOut === "in" ? (
             <>
@@ -82,18 +104,21 @@ function TradesList(props) {
             <th className={styles.col1}>Book</th>
             <th className={styles.col2}>Status</th>
             <th className={styles.col3}>User</th>
-            <th className={styles.col4}>Date</th>
+            {isSM ? <th className={styles.col4}>Date</th> : null}
             <th className={styles.col5}>Action</th>
           </tr>
         </thead>
-        <tbody className={styles.body}>
-          {data &&
-            data.map((request, index) => (
-              <TradeRequest key={`request-${inOut}-${index}`} data={request} />
-            ))}
-        </tbody>
-        {!data.length ? <td className={styles.error}>No trades yet</td> : null}
+        <tbody className={styles.body}>{data && renderPage(data)}</tbody>
+        {!data.length ? (
+          <tfoot className={styles.error}>No trades yet</tfoot>
+        ) : null}
       </table>
+      <Pagination
+        page={page}
+        pages={pages}
+        displayedResults={data}
+        setPage={setPage}
+      />
     </>
   )
 }

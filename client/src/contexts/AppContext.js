@@ -118,10 +118,15 @@ const AppContextProvider = ({ children }) => {
           trades: action.data.sortedTrades,
         }
       case TYPES.TOGGLE_IS_ADDING:
-        return {
-          ...state,
-          isAdding: state.isAdding ? false : true,
-        }
+        return action.close
+          ? {
+              ...state,
+              isAdding: false,
+            }
+          : {
+              ...state,
+              isAdding: state.isAdding ? false : true,
+            }
       case TYPES.TOGGLE_IN_OUT:
         return {
           ...state,
@@ -152,9 +157,26 @@ const AppContextProvider = ({ children }) => {
     }
   }
   const [state, dispatch] = useReducer(appReducer, initialState)
+  const handleFilter = {
+    allBooks: (value) => {
+      dispatch({ type: "SET_LANGUAGE_FILTER", language: value })
+    },
+    titleFilter: (value) => {
+      dispatch({ type: "SET_TITLE_FILTER", title: value })
+    },
+    authorFilter: (value) => {
+      dispatch({ type: "SET_AUTHOR_FILTER", author: value })
+    },
+    sortOrder: (sortOrder) => {
+      dispatch({ type: "SET_SORT_SERVER_SIDE", sortOrder })
+    },
+  }
+  const handleInOut = () => {
+    dispatch({ type: "TOGGLE_IN_OUT" })
+  }
 
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider value={{ state, dispatch, handleFilter, handleInOut }}>
       {children}
     </AppContext.Provider>
   )

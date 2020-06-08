@@ -7,4 +7,35 @@
   grid-column: main-start/main-end;
   grid-row: main-start/main-end;
   display: grid;
+  grid-template-columns: [main-start]1fr[main-end];
+  grid-template-rows: [main-start]1fr [pagination-start] 5rem[main-end pagination-end];
+  @include respond("md") {
+    grid-column: 1/-1;
+  }
+}
+.header {
+  font-size: 2rem;
+  grid-row: 1/2;
+  grid-column: 1/-1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.selector {
+  @extend .header;
+  transition: all 0.2s;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    color: $color-red;
+  }
+}
+.selectorAlt {
+  @extend .selector;
+
+  &:hover,
+  &:focus {
+    color: $color-blue;
+  }
 }

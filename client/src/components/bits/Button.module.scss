@@ -1,4 +1,6 @@
 @import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
 .button {
   display: block;
   border: none;
@@ -21,8 +23,8 @@
     font-weight: 500;
   }
 
-  @media (max-width: 37.5em) {
-    width: 100%;
+  @include respond("xs") {
+    padding: 0.6rem 1.6rem;
   }
 }
 

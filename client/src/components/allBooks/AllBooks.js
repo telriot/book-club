@@ -6,13 +6,14 @@ import Pagination from "../bits/Pagination"
 import SideBar from "../layout/SideBar"
 import styles from "./AllBooks.module.scss"
 import axios from "axios"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 function AllBooks() {
   const { state, dispatch } = useContext(AppContext)
   const { page, pages, maxResults, books, languageFilter, sortOrder } = state
+  const { isXS, isSM, isMD, isLG } = useContext(WindowSizeContext)
   const debouncedTitle = useDebounce(state.titleFilter, 500)
   const debouncedAuthor = useDebounce(state.authorFilter, 500)
-
   const getAllBooks = async () => {
     let data = { books: [], totalResults: 0, totalPages: 0 }
     try {
@@ -43,20 +44,30 @@ function AllBooks() {
     getAllBooks()
   }, [page, languageFilter, sortOrder])
   useEffect(() => {
-    if (debouncedTitle || (!debouncedTitle && books.length !== 0)) getAllBooks()
+    if (
+      debouncedTitle ||
+      debouncedAuthor ||
+      (!debouncedTitle && books.length !== 0)
+    )
+      getAllBooks()
   }, [debouncedTitle])
   useEffect(() => {
-    if (debouncedAuthor || (!debouncedAuthor && books.length !== 0))
+    if (
+      debouncedAuthor ||
+      debouncedTitle ||
+      (!debouncedAuthor && books.length !== 0)
+    )
       getAllBooks()
   }, [debouncedAuthor])
   useEffect(() => {
     window.scrollTo(0, 0)
     dispatch({ type: "SET_PAGE", page: 1 })
+    return () => dispatch({ type: "SET_PAGE", page: 1 })
   }, [])
 
   return (
     <div className={styles.container}>
-      <SideBar allBooks={true} />
+      {isLG ? <SideBar allBooks={true} /> : null}
       <div className={styles.main}>
         {state.books.length
           ? state.books.map((item, index) => (
