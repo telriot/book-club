@@ -5,7 +5,7 @@
   position: fixed;
   top: 6rem;
   right: 0px;
-  height: 6rem;
+  height: 5rem;
   width: 100%;
   display: flex;
   justify-content: space-evenly;
@@ -59,8 +59,12 @@
   transition: all 0.2s;
 }
 .selector {
+  @extend .navItemText;
+  font-weight: 700;
   cursor: pointer;
 }
-.selectorAlt {
-  cursor: pointer;
+.selectorXs {
+  @extend .selector;
+  padding: 0.8rem 0.8rem;
+  margin-bottom: 1rem;
 }

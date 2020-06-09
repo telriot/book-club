@@ -50,7 +50,16 @@ function UserDetail(props) {
     )
     return isSubmitted.length ? true : false
   }
-
+  const DynamicButton = () =>
+    isAlreadySubmitted(googleId, user) ? (
+      <button className={styles.button}>Request sent</button>
+    ) : isSubmitting ? (
+      <button className={styles.button}>Submitting</button>
+    ) : user.username !== authState.username ? (
+      <button className={styles.button}>Send a request</button>
+    ) : (
+      <button className={styles.button}>In your books</button>
+    )
   return (
     <div
       className={styles.wrapper}
@@ -62,11 +71,9 @@ function UserDetail(props) {
       }
     >
       <div className={styles.user} key={`userDiv-${index}`}>
-        <p className={styles.username}>
-          <Link className={styles.username} to={`/users/${user.username}`}>
-            {user.username}
-          </Link>{" "}
-          ({user.books.length})
+        <p className={styles.userText}>
+          <Link to={`/users/${user.username}`}>{user.username}</Link> (
+          {user.books.length})
         </p>
         <img
           src={placeholder}
@@ -75,15 +82,7 @@ function UserDetail(props) {
         />
       </div>
 
-      {isAlreadySubmitted(googleId, user) ? (
-        <button className={styles.button}>Trade request sent.</button>
-      ) : isSubmitting ? (
-        <button className={styles.button}>Submitting</button>
-      ) : user.username !== authState.username ? (
-        <button className={styles.button}>Send a request</button>
-      ) : (
-        <button className={styles.button}>In your collection</button>
-      )}
+      {authState.username ? <DynamicButton /> : null}
     </div>
   )
 }

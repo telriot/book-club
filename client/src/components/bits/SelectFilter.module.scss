@@ -43,6 +43,10 @@
   option {
     font-weight: inherit;
     font-size: inherit;
+    color: $color-black;
+    &:disabled {
+      color: #666;
+    }
   }
   &:-moz-focusring {
     outline: 0;

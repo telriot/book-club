@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
+  margin: 0 0.5rem;
   box-shadow: $box-shadow-2;
   transition: all 0.2s;
 
@@ -23,12 +24,15 @@
   justify-content: center;
   padding: 0.2rem;
 }
-.username {
-  margin-right: 0.4rem;
+.userText {
+  margin-right: 1rem;
   font-size: 1.6rem;
   color: $color-black;
-  text-decoration: none;
+  a {
+    color: inherit;
+  }
 }
+
 .button {
   display: block;
   border: none;

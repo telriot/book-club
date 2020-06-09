@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react"
-import { Link } from "react-router-dom"
+import React, { useContext, useState, useEffect } from "react"
+import { Link, useParams } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
 import styles from "./Navbar.module.scss"
@@ -9,8 +9,9 @@ import NavbarDropdown from "./NavbarDropdown"
 function Navbar() {
   const { dispatch } = useContext(AppContext)
   const { authState, handleLogout } = useContext(AuthContext)
-  const { isXS, isSM, isMD, isLG } = useContext(WindowSizeContext)
+  const { isSM, isLG } = useContext(WindowSizeContext)
   const { username } = authState
+  const params = useParams()
   const [isOpen, setOpen] = useState(false)
 
   const handleModal = (e) => {
@@ -21,6 +22,10 @@ function Navbar() {
   const toggleHamburger = () => {
     setOpen((prevState) => (prevState ? false : true))
   }
+
+  useEffect(() => {
+    setOpen(false)
+  }, [params[0]])
 
   return (
     <React.Fragment>
@@ -86,15 +91,17 @@ function Navbar() {
           </ul>
           {username && isSM ? (
             <ul className={styles.navRight}>
-              <li className={styles.navItem}>
-                <Link
-                  className={styles.navItemText}
-                  name="my-profile"
-                  to="/my-profile"
-                >
-                  My Profile
-                </Link>
-              </li>
+              {params[0] !== "my-profile" ? (
+                <li className={styles.navItem}>
+                  <Link
+                    className={styles.navItemText}
+                    name="my-profile"
+                    to="/my-profile"
+                  >
+                    My Profile
+                  </Link>
+                </li>
+              ) : null}
               <li className={styles.navItem}>
                 <Link
                   className={styles.navItemText}
@@ -107,7 +114,7 @@ function Navbar() {
               </li>
             </ul>
           ) : null}
-          {!isLG ? (
+          {!isLG && params[0] && !(params[0] === "my-profile" && isSM) ? (
             <>
               <div className={styles.hamburger}>
                 <button
