@@ -16,6 +16,9 @@
       color: $color-red;
     }
   }
+  @include respond("xs") {
+    margin: 1rem;
+  }
 }
 
 .user {

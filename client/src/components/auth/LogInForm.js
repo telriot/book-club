@@ -39,7 +39,8 @@ const LogInForm = () => {
       history.push("/books")
     } catch (error) {
       formik.setSubmitting(false)
-
+      formik.resetForm()
+      formik.setFieldError("general", "Invalid Credentials")
       console.log(error)
     }
   }
@@ -59,9 +60,9 @@ const LogInForm = () => {
         validationSchema={Yup.object(validationSchema)}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, errors }) => (
           <Form className={styles.form}>
-            {" "}
+            <p className={styles.error}>{errors.general}</p>
             <TextInput
               label="Username"
               type="text"

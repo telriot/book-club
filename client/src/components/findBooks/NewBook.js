@@ -4,8 +4,10 @@ import DropdownInput from "../bits/DropdownInput"
 import useDebounce from "../../hooks/useDebounce"
 import styles from "./NewBook.module.scss"
 import axios from "axios"
+import { AppContext } from "../../contexts/AppContext"
 
 function NewBook() {
+  const { dispatch } = useContext(AppContext)
   const { searchState, searchDispatch } = useContext(SearchContext)
   const { input, languageFilter } = searchState
   const searchTerm = useDebounce(input, 500)
@@ -20,8 +22,9 @@ function NewBook() {
   const GOOGLE_API_URL = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}${languageRestrictions}${startIndex}${maxResults}&key=AIzaSyA-VAYQEfoIlFHypONP6mr0GlIYKnUMeT4`
 
   const findBooks = async () => {
-    searchDispatch({ type: "TOGGLE_IS_SEARCHING" })
+    dispatch({ type: "SET_IS_LOADING", isLoading: true })
 
+    searchDispatch({ type: "TOGGLE_IS_SEARCHING" })
     let data = { results: [], totalItems: 0, totalPages: 0 }
     try {
       const response = await axios.get(`${GOOGLE_API_URL}`)
@@ -37,9 +40,11 @@ function NewBook() {
         type: "SET_RESULTS",
         data,
       })
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
     } catch (error) {
       console.log(error)
       searchDispatch({ type: "SET_RESULTS", data })
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
     }
   }
 

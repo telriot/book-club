@@ -6,6 +6,7 @@ import Pagination from "../bits/Pagination"
 import styles from "./TradesList.module.scss"
 import axios from "axios"
 import moment from "moment"
+import Loader from "react-loader-spinner"
 import { MdThumbUp, MdThumbDown } from "react-icons/md"
 
 function TradesList(props) {
@@ -110,7 +111,19 @@ function TradesList(props) {
         </thead>
         <tbody className={styles.body}>{data && renderPage(data)}</tbody>
         {!data.length ? (
-          <tfoot className={styles.error}>No trades yet</tfoot>
+          state.isLoading ? (
+            <div className={styles.spinner}>
+              <Loader
+                type="Puff"
+                color={inOut === "in" ? "#2ec4b6" : "#e71d36"}
+                height={100}
+                width={100}
+                timeout={3000} //3 secs
+              />
+            </div>
+          ) : (
+            <tfoot className={styles.error}>No trades yet</tfoot>
+          )
         ) : null}
       </table>
       <Pagination

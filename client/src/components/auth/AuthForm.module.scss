@@ -5,6 +5,7 @@
   @include modal-form-container;
 }
 .header {
+  position: relative;
   font-size: 2.6rem;
   align-self: center;
   margin-bottom: 2rem;
@@ -17,4 +18,11 @@
 .btnDiv {
   display: flex;
   justify-content: space-around;
+}
+.error {
+  color: $color-red;
+  text-align: center;
+  font-size: 1.2rem;
+  transform: translateY(-1.5rem);
+  height: 0.8rem;
 }

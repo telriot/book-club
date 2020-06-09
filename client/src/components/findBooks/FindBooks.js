@@ -17,7 +17,6 @@ function FindBooks() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-
     searchDispatch({ type: "SET_PAGE", page: 1 })
     return () =>
       state.isAdding

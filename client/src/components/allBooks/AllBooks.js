@@ -5,6 +5,7 @@ import useDebounce from "../../hooks/useDebounce"
 import BookCard from "../shared/BookCard"
 import Pagination from "../bits/Pagination"
 import SideBar from "../layout/SideBar"
+import Loader from "react-loader-spinner"
 import styles from "./AllBooks.module.scss"
 import axios from "axios"
 
@@ -16,6 +17,8 @@ function AllBooks() {
   const debouncedAuthor = useDebounce(state.authorFilter, 500)
 
   const getAllBooks = async () => {
+    dispatch({ type: "SET_IS_LOADING", isLoading: true })
+
     let data = { books: [], totalResults: 0, totalPages: 0 }
     try {
       const params = {
@@ -35,8 +38,10 @@ function AllBooks() {
         dispatch({ type: "SET_PAGE", page: totalPages })
       }
       dispatch({ type: "SET_BOOKS", data })
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
     } catch (error) {
       console.log(error)
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
     }
   }
   const setPage = (page) => dispatch({ type: "SET_PAGE", page })
@@ -74,11 +79,21 @@ function AllBooks() {
     <div className={styles.container}>
       {isLG ? <SideBar allBooks={true} /> : null}
       <div className={styles.main}>
-        {state.books.length
-          ? state.books.map((item, index) => (
-              <BookCard owners={true} item={item} key={`card-${index}`} />
-            ))
-          : null}
+        {state.isLoading ? (
+          <div className={styles.spinner}>
+            <Loader
+              type="Puff"
+              color={"#e71d36"}
+              height={100}
+              width={100}
+              timeout={3000} //3 secs
+            />
+          </div>
+        ) : state.books.length ? (
+          state.books.map((item, index) => (
+            <BookCard owners={true} item={item} key={`card-${index}`} />
+          ))
+        ) : null}
       </div>
       <Pagination
         page={page}

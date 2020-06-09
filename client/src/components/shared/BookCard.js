@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from "react"
+import React, { useContext, useRef } from "react"
 import { useHistory } from "react-router-dom"
 import { AuthContext } from "../../contexts/AuthContext"
 import { AppContext } from "../../contexts/AppContext"
@@ -39,6 +39,8 @@ function BookCard(props) {
   }
 
   const handleTradeConfirmation = async () => {
+    dispatch({ type: "SET_IS_LOADING", isLoading: true })
+
     console.log("confirm trade with this")
     const acceptObject = {
       tradeId: state.tradeToConfirm.id,
@@ -49,15 +51,15 @@ function BookCard(props) {
     }
     try {
       const response = await axios.post(`/api/requests/accept`, acceptObject)
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
       history.push("/my-trades")
       console.log(response.data)
     } catch (error) {
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
       console.log(error)
     }
   }
-  useEffect(() => {
-    console.log()
-  })
+
   return (
     <div ref={cardRef} className={styles.card}>
       <div

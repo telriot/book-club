@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useContext } from "react"
 import PaginationItem from "./PaginationItem"
 import styles from "./Pagination.module.scss"
+import { AppContext } from "../../contexts/AppContext"
 
 function Pagination(props) {
+  const { state } = useContext(AppContext)
   const { page, pages, displayedResults, setPage } = props
   const paginationItems = () => {
     let items = []
@@ -22,7 +24,7 @@ function Pagination(props) {
     return items
   }
 
-  return displayedResults.length ? (
+  return displayedResults.length && !state.isLoading ? (
     <div className={styles.wrapper}>
       {page !== 1 ? (
         <PaginationItem

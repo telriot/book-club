@@ -29,3 +29,6 @@
 .main {
   @include main-books;
 }
+.spinner {
+  @include spinner-grid;
+}

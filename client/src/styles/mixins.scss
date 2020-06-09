@@ -26,7 +26,7 @@ $breakpoints: (
     grid-template-columns: [left-gutter-start]1vw[left-gutter-end sidebar-start]30rem[sidebar-end main-start] 1fr[main-end right-gutter-start]1vw[right-gutter-end];
   }
   @media (max-width: 62em) {
-    grid-template-columns: [left-gutter-start]1fr [ main-start] 1fr[main-end right-gutter-start]1fr[right-gutter-end];
+    grid-template-columns: [left-gutter-start]1fr [ main-start] max-content[main-end right-gutter-start]1fr[right-gutter-end];
   }
 }
 
@@ -70,4 +70,11 @@ $breakpoints: (
   @media (max-width: 36em) {
     width: 28rem;
   }
+}
+@mixin spinner-grid {
+  grid-column: 1/-1;
+  grid-row: 1/2;
+  align-self: center;
+  justify-self: center;
+  transform: translateY(15vh);
 }

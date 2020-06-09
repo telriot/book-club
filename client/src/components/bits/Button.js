@@ -16,7 +16,7 @@ function Button(props) {
       onClick={onClick}
       disabled={disabled}
     >
-      {disabled ? "submitting" : text}
+      {text}
     </button>
   )
 }

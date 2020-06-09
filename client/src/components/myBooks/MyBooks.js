@@ -5,6 +5,7 @@ import BookCard from "../shared/BookCard"
 import FindBooks from "../findBooks/FindBooks"
 import Pagination from "../bits/Pagination"
 import SideBar from "../layout/SideBar"
+import Loader from "react-loader-spinner"
 import styles from "./MyBooks.module.scss"
 import axios from "axios"
 
@@ -15,6 +16,8 @@ function MyBooks() {
   const { page, pages, maxResults, books } = state
   const setPage = (page) => dispatch({ type: "SET_PAGE", page })
   const getMyBooks = async () => {
+    dispatch({ type: "SET_IS_LOADING", isLoading: true })
+
     let data = { books: [], totalResults: 0, totalPages: 0 }
     try {
       const response = await axios.get(`/api/books/${authState.username}`)
@@ -23,7 +26,10 @@ function MyBooks() {
       data.totalPages = Math.ceil(response.data.length / maxResults)
 
       dispatch({ type: "SET_BOOKS", data })
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
     } catch (error) {
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
+
       console.log(error)
     }
     return () => {
@@ -56,7 +62,19 @@ function MyBooks() {
       <SideBar myBooks={true} />
 
       <div className={styles.main}>
-        {state.books.length ? renderPage(state.books) : null}
+        {state.isLoading ? (
+          <div className={styles.spinner}>
+            <Loader
+              type="Puff"
+              color={"#e71d36"}
+              height={100}
+              width={100}
+              timeout={3000} //3 secs
+            />
+          </div>
+        ) : state.books.length ? (
+          renderPage(state.books)
+        ) : null}
       </div>
 
       <Pagination

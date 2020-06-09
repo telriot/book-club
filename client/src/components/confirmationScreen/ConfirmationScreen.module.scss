@@ -42,3 +42,6 @@
     margin-right: 1rem;
   }
 }
+.spinner {
+  @include spinner-grid;
+}

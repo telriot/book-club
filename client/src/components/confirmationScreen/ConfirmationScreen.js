@@ -4,6 +4,7 @@ import { AppContext } from "../../contexts/AppContext"
 import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 import BookCard from "../shared/BookCard"
 import Pagination from "../bits/Pagination"
+import Loader from "react-loader-spinner"
 import placeholder from "../../styles/img/flag_placeholder.png"
 import styles from "./ConfirmationScreen.module.scss"
 
@@ -21,7 +22,10 @@ function ConfirmationScreen() {
     const startIndex = (page - 1) * maxResults
     const endIndex = page * maxResults
     for (let i = startIndex; i < endIndex; i++) {
-      arr[i] && books.push(<BookCard item={arr[i]} key={`card-${i}`} />)
+      arr[i] &&
+        books.push(
+          <BookCard tradeConfirmation={true} item={arr[i]} key={`card-${i}`} />
+        )
     }
     return books
   }
@@ -40,22 +44,37 @@ function ConfirmationScreen() {
 
   return (
     <div className={styles.container}>
-      <div className={isLG ? styles.sideBar : styles.headerTop}>
-        <h1 className={styles.header}>Trade with</h1>
-        <h1 className={styles.username}>{username}</h1>
-        <div className={styles.location}>
-          <p>From {city} </p>
-          <img
-            src={placeholder}
-            className={`flag flag-${country.toLowerCase()}`}
-            style={{ height: "15px", width: "22px" }}
+      {state.isLoading ? (
+        <div className={styles.spinner}>
+          <Loader
+            type="Puff"
+            color={"#e71d36"}
+            height={100}
+            width={100}
+            timeout={3000} //3 secs
           />
         </div>
-      </div>
+      ) : (
+        <>
+          <div className={isLG ? styles.sideBar : styles.headerTop}>
+            <h1 className={styles.header}>Trade with</h1>
+            <h1 className={styles.username}>{username}</h1>
+            <div className={styles.location}>
+              <p>From {city} </p>
+              <img
+                src={placeholder}
+                className={`flag flag-${country.toLowerCase()}`}
+                style={{ height: "15px", width: "22px" }}
+              />
+            </div>
+          </div>
 
-      <div className={styles.main}>
-        {books.length ? renderPage(books) : null}
-      </div>
+          <div className={styles.main}>
+            {books.length ? renderPage(books) : null}
+          </div>
+        </>
+      )}
+
       <Pagination
         page={page}
         pages={pages}

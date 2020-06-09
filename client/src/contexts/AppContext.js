@@ -21,6 +21,7 @@ const initialState = {
   deletionTarget: "",
   inOut: "in",
   isAdding: false,
+  isLoading: false,
   isConfirming: false,
   languageFilter: "",
   maxResults: 20,
@@ -87,6 +88,11 @@ const AppContextProvider = ({ children }) => {
         return {
           ...state,
           deletionTarget: action.target,
+        }
+      case TYPES.SET_IS_LOADING:
+        return {
+          ...state,
+          isLoading: action.isLoading,
         }
       case TYPES.SET_LANGUAGE_FILTER:
         return {
@@ -179,22 +185,33 @@ const AppContextProvider = ({ children }) => {
     dispatch({ type: "TOGGLE_IN_OUT" })
   }
   const getUserData = async (username, setPage, setPages) => {
+    dispatch({ type: "SET_IS_LOADING", isLoading: true })
     try {
       const response = await axios.get(`/api/users/public/${username}`)
       const user = response.data
       setPage(1)
       setPages(Math.ceil(user.books.length / state.maxResults))
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
+
       dispatch({ type: "SET_USER", user })
     } catch (error) {
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
+
       console.log(error)
     }
   }
   const getMyTrades = async (username) => {
+    dispatch({ type: "SET_IS_LOADING", isLoading: true })
+
     try {
       const response = await axios.get(`/api/requests/${username}`)
       const { requestsIn, requestsOut } = response.data
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
+
       dispatch({ type: "SET_TRADES", trades: { requestsIn, requestsOut } })
     } catch (error) {
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
+
       console.log(error)
     }
   }

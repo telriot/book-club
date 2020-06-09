@@ -1,7 +1,6 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
-
 import { Link } from "react-router-dom"
 import styles from "./UserDetail.module.scss"
 import "../../styles/flags.css"
@@ -56,20 +55,22 @@ function UserDetail(props) {
     ) : isSubmitting ? (
       <button className={styles.button}>Submitting</button>
     ) : user.username !== authState.username ? (
-      <button className={styles.button}>Send a request</button>
+      <button
+        onClick={
+          user.username !== authState.username &&
+          !isAlreadySubmitted(googleId, user)
+            ? handleRequest(user)
+            : null
+        }
+        className={styles.button}
+      >
+        Send a request
+      </button>
     ) : (
       <button className={styles.button}>In your books</button>
     )
   return (
-    <div
-      className={styles.wrapper}
-      onClick={
-        user.username !== authState.username &&
-        !isAlreadySubmitted(googleId, user)
-          ? handleRequest(user)
-          : null
-      }
-    >
+    <div className={styles.wrapper}>
       <div className={styles.user} key={`userDiv-${index}`}>
         <p className={styles.userText}>
           <Link to={`/users/${user.username}`}>{user.username}</Link> (
