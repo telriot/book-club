@@ -27,6 +27,7 @@ function ConfirmationScreen() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     if (!state.isConfirming) {
       history.push("/my-trades")
     } else {

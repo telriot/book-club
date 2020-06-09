@@ -24,6 +24,7 @@ function BookDetail() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     getBookDetail()
     return () => {
       dispatch({ type: "RESET_BOOK_DETAIL" })

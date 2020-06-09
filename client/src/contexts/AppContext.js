@@ -182,7 +182,6 @@ const AppContextProvider = ({ children }) => {
     try {
       const response = await axios.get(`/api/users/public/${username}`)
       const user = response.data
-      console.log(user)
       setPage(1)
       setPages(Math.ceil(user.books.length / state.maxResults))
       dispatch({ type: "SET_USER", user })

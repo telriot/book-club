@@ -12,7 +12,7 @@ function Landing() {
       <div className={styles.container}>
         <div className={styles.jumbotron}>
           <div className={styles.headerDiv}>
-            <h1 className={styles.header}>Your stories make your world.</h1>
+            <h1 className={styles.header}>Your stories are your world.</h1>
             <h1 className={styles.header}>Share them.</h1>
           </div>
 

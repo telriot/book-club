@@ -37,10 +37,6 @@ const MyProfile = () => {
     }
   }
 
-  const handleCancel = () => {
-    console.log("clicked")
-  }
-
   const getUserInfo = async () => {
     try {
       const results = await axios.get(`/api/users/${authState.username}`)
@@ -51,6 +47,7 @@ const MyProfile = () => {
     }
   }
   useEffect(() => {
+    window.scrollTo(0, 0)
     if (authState.username) getUserInfo()
   }, [authState])
 

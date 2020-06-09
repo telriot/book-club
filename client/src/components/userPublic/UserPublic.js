@@ -26,6 +26,7 @@ function UserPublic() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     getUserData(params.username, setPage, setPages)
     return () => {
       dispatch({ type: "RESET_USER" })
