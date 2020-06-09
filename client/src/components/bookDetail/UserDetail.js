@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useState } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
 import { Link } from "react-router-dom"
@@ -80,6 +80,7 @@ function UserDetail(props) {
           src={placeholder}
           className={`flag flag-${user.country.toLowerCase()}`}
           style={{ height: "15px", width: "22px" }}
+          alt="flag"
         />
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useCallback } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 import useDebounce from "../../hooks/useDebounce"
@@ -16,7 +16,7 @@ function AllBooks() {
   const debouncedTitle = useDebounce(state.titleFilter, 500)
   const debouncedAuthor = useDebounce(state.authorFilter, 500)
 
-  const getAllBooks = async () => {
+  const getAllBooks = useCallback(async () => {
     dispatch({ type: "SET_IS_LOADING", isLoading: true })
 
     let data = { books: [], totalResults: 0, totalPages: 0 }
@@ -43,7 +43,14 @@ function AllBooks() {
       console.log(error)
       dispatch({ type: "SET_IS_LOADING", isLoading: false })
     }
-  }
+  }, [
+    page,
+    maxResults,
+    languageFilter,
+    debouncedTitle,
+    debouncedAuthor,
+    sortOrder,
+  ])
   const setPage = (page) => dispatch({ type: "SET_PAGE", page })
 
   useEffect(() => {
@@ -55,7 +62,7 @@ function AllBooks() {
   useEffect(() => {
     window.scrollTo(0, 0)
     getAllBooks()
-  }, [page, languageFilter, sortOrder])
+  }, [page, languageFilter, sortOrder, getAllBooks])
 
   useEffect(() => {
     if (

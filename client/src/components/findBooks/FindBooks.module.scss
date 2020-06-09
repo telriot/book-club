@@ -3,7 +3,7 @@
 .container {
   @include main-grid;
   @include respond("md") {
-    grid-template-rows: [title-row]8rem[top-gutter-start]8rem [top-gutter-end main-start]1fr[main-end pagination-start]5rem[pagination-end];
+    grid-template-rows: [title-row]10rem[top-gutter-start]8rem [top-gutter-end main-start]1fr[main-end pagination-start]5rem[pagination-end];
   }
 }
 .main {

@@ -36,7 +36,7 @@ const Autocomplete = ({ label, ...props }) => {
     if (loaded && !error) {
       handleAutocomplete(setValue)
     }
-  }, [searchTerm])
+  }, [searchTerm, loaded, error])
 
   return (
     <div className={styles.wrapper}>

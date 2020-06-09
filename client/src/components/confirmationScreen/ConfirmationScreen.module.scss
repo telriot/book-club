@@ -45,3 +45,7 @@
 .spinner {
   @include spinner-grid;
 }
+.error {
+  @include spinner-grid;
+  font-size: 1.4rem;
+}

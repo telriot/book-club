@@ -3,6 +3,12 @@
 
 .container {
   @include main-grid;
+  @include respond("md") {
+    grid-template-rows: [top-gutter-start]16rem [top-gutter-end main-start]1fr[main-end pagination-start]5rem[pagination-end];
+  }
+}
+.main {
+  @include main-books;
 }
 .sideBar {
   @include sidebar;
@@ -11,24 +17,32 @@
   font-size: 2rem;
   margin-bottom: 2rem;
 }
+.topHeader {
+  grid-row: 1/2;
+  grid-column: main-start/main-end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.userDiv {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.4rem;
+}
+
 .from {
   display: flex;
   align-items: center;
 }
-.sideInfo {
+.info {
+  font-size: 1.4rem;
   margin-right: 0.5rem;
 }
 .header {
-  grid-row: 1/2;
-  grid-column: main-start/main-end;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 2.5rem;
 }
-.main {
-  @include main-books;
-}
+
 .spinner {
   @include spinner-grid;
 }

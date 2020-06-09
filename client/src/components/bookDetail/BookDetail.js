@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react"
+import React, { useEffect, useContext, useCallback } from "react"
 import { useParams } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
@@ -15,10 +15,10 @@ function BookDetail() {
 
   const { users } = state.bookDetail
 
-  const getBookDetail = async () => {
+  const getBookDetail = useCallback(async (params) => {
     dispatch({ type: "SET_IS_LOADING", isLoading: true })
     try {
-      const response = await axios.get(`/api/books/detail/${params.googleId}`)
+      const response = await axios.get(`/api/books/detail/${params}`)
       const bookDetail = response.data
       dispatch({ type: "SET_BOOK_DETAIL", bookDetail })
       dispatch({ type: "SET_IS_LOADING", isLoading: false })
@@ -26,24 +26,28 @@ function BookDetail() {
       dispatch({ type: "SET_IS_LOADING", isLoading: false })
       console.log(error)
     }
-  }
+  }, [])
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    getBookDetail()
+    getBookDetail(params.googleId)
     return () => {
       dispatch({ type: "RESET_BOOK_DETAIL" })
     }
-  }, [])
+  }, [getBookDetail, params.googleId])
   useEffect(() => {
     authState.username && getMyTrades(authState.username)
-  }, [authState.username])
+  }, [authState.username, getMyTrades])
 
   return (
     <div className={styles.container}>
-      <div className={styles.sideBar}>
-        {!state.isLoading ? <InfoDetail /> : null}
-      </div>
+      {!state.isLoading ? (
+        <>
+          <div className={styles.sideBar}>
+            <InfoDetail />
+          </div>
+        </>
+      ) : null}
       <div className={styles.main}>
         <h2 className={styles.mainHeader}>Owned by</h2>
         {state.isLoading ? (

@@ -12,7 +12,7 @@ function BookSearchResults() {
   useEffect(() => searchDispatch({ type: "RESET_RESULTS" }), [])
   return (
     <div className={styles.container}>
-      {state.isLoading ? (
+      {state.isLoading && searchState.display ? (
         <div className={styles.spinner}>
           <Loader
             type="Puff"

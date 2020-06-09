@@ -22,7 +22,7 @@ function FindBooks() {
       state.isAdding
         ? dispatch({ type: "TOGGLE_IS_ADDING", close: true })
         : null
-  }, [])
+  }, [state.isAdding])
   return (
     <div className={styles.container}>
       {isMD ? <SideBar findBooks={true} /> : null}

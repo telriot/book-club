@@ -40,7 +40,12 @@ function ConfirmationScreen() {
     return () => {
       dispatch({ type: "RESET_USER" })
     }
-  }, [])
+  }, [
+    getUserData,
+    history,
+    state.isConfirming,
+    state.tradeToConfirm.author.username,
+  ])
 
   return (
     <div className={styles.container}>
@@ -65,12 +70,17 @@ function ConfirmationScreen() {
                 src={placeholder}
                 className={`flag flag-${country.toLowerCase()}`}
                 style={{ height: "15px", width: "22px" }}
+                alt="flag"
               />
             </div>
           </div>
 
           <div className={styles.main}>
-            {books.length ? renderPage(books) : null}
+            {books.length ? (
+              renderPage(books)
+            ) : (
+              <p className={styles.error}>No books for trade yet. Sorry!</p>
+            )}
           </div>
         </>
       )}

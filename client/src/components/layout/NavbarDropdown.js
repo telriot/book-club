@@ -12,7 +12,6 @@ import sortOptions from "../../data/sortOptions.json"
 import styles from "./NavbarDropdown.module.scss"
 
 function NavbarDropdown(props) {
-  const { isOpen } = props
   const { state, dispatch, handleFilter } = useContext(AppContext)
   const { authState, handleLogout } = useContext(AuthContext)
   const params = useParams()
@@ -20,10 +19,15 @@ function NavbarDropdown(props) {
     SearchContext
   )
   const { isXS } = useContext(WindowSizeContext)
+  const { isOpen } = state
   const handleNewBook = () => {
     dispatch({ type: "TOGGLE_IS_ADDING" })
     searchDispatch({ type: "RESET_RESULTS" })
   }
+  const isMainPage =
+    params[0] === "books" ||
+    params[0] === "my-books" ||
+    params[0] === "my-trades"
 
   const NavBottom = () => (
     <ul className={styles.navBottom}>
@@ -125,6 +129,8 @@ function NavbarDropdown(props) {
             {isXS && authState.username ? <NavBottom /> : null}
           </>
         ) : params[0] === "my-profile" && isXS && authState.username ? (
+          <NavBottom />
+        ) : isXS && !isMainPage ? (
           <NavBottom />
         ) : null
       ) : null}

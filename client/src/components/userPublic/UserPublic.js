@@ -7,14 +7,24 @@ import Loader from "react-loader-spinner"
 import styles from "./UserPublic.module.scss"
 import "../../styles/flags.css"
 import placeholder from "../../styles/img/flag_placeholder.png"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 function UserPublic() {
   const { state, dispatch, getUserData } = useContext(AppContext)
+  const { isLG } = useContext(WindowSizeContext)
   const params = useParams()
   const { user, maxResults } = state
   const { username, city, country, books } = user
   const [page, setPage] = useState(1)
   const [pages, setPages] = useState(0)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    getUserData(params.username, setPage, setPages)
+    return () => {
+      dispatch({ type: "RESET_USER" })
+    }
+  }, [params.username, getUserData])
 
   const renderPage = (arr) => {
     let books = []
@@ -26,28 +36,45 @@ function UserPublic() {
     return books
   }
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-    getUserData(params.username, setPage, setPages)
-    return () => {
-      dispatch({ type: "RESET_USER" })
-    }
-  }, [])
-
-  return (
-    <div className={styles.container}>
-      <div className={styles.sideBar}>
-        <h1 className={styles.sideHeader}>{username}</h1>
+  const UserSideBar = () => (
+    <div className={styles.sideBar}>
+      <h1 className={styles.sideHeader}>{username}</h1>
+      <div className={styles.from}>
+        <h2 className={styles.info}>From {city} </h2>
+        <img
+          src={placeholder}
+          className={`flag flag-${country.toLowerCase()}`}
+          style={{ height: "15px", width: "22px" }}
+          alt="flag"
+        />
+      </div>
+    </div>
+  )
+  const TopHeaderMd = () => (
+    <>
+      <h3 className={styles.header}>Books for trade</h3>
+      <div className={styles.userDiv}>
+        <h5 className={styles.info}>{username}</h5>
         <div className={styles.from}>
-          <h2 className={styles.sideInfo}>From {city} </h2>
+          <h5 className={styles.info}>{city ? ` - from ${city}` : null}</h5>
           <img
             src={placeholder}
             className={`flag flag-${country.toLowerCase()}`}
             style={{ height: "15px", width: "22px" }}
+            alt="flag"
           />
         </div>
       </div>
-      <h3 className={styles.header}>Books for trade</h3>
+    </>
+  )
+  const BooksMain = () => (
+    <div className={styles.main}>{books.length ? renderPage(books) : null}</div>
+  )
+
+  return (
+    <div className={styles.container}>
+      {!state.isLoading && isLG ? <UserSideBar /> : null}
+
       {state.isLoading ? (
         <div className={styles.spinner}>
           <Loader
@@ -59,9 +86,16 @@ function UserPublic() {
           />
         </div>
       ) : (
-        <div className={styles.main}>
-          {books.length ? renderPage(books) : null}
-        </div>
+        <>
+          <div className={styles.topHeader}>
+            {isLG ? (
+              <h3 className={styles.header}>Books for trade</h3>
+            ) : (
+              <TopHeaderMd />
+            )}
+          </div>
+          <BooksMain />
+        </>
       )}
       <Pagination
         page={page}

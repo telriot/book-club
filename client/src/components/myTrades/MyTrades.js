@@ -18,7 +18,7 @@ function MyTrades() {
     return () => {
       dispatch({ type: "RESET_BOOK_DETAIL" })
     }
-  }, [authState])
+  }, [authState, getMyTrades])
 
   return (
     <div className={styles.container}>

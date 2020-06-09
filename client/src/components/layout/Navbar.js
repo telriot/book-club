@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
@@ -8,26 +8,27 @@ import NavbarDropdown from "./NavbarDropdown"
 import styles from "./Navbar.module.scss"
 
 function Navbar() {
-  const { dispatch } = useContext(AppContext)
+  const { state, dispatch } = useContext(AppContext)
   const { authState, handleLogout } = useContext(AuthContext)
-  const { isSM, isLG } = useContext(WindowSizeContext)
-  const [isOpen, setOpen] = useState(false)
+  const { isXS, isSM, isLG } = useContext(WindowSizeContext)
+  const { isOpen } = state
   const { username } = authState
   const params = useParams()
-
+  const param = params[0]
   const handleModal = (e) => {
     e.persist()
     dispatch({ type: "TOGGLE_MODAL", modal: e.target.name })
   }
 
   const toggleHamburger = () => {
-    setOpen((prevState) => (prevState ? false : true))
+    dispatch({ type: "SET_IS_OPEN", isOpen: isOpen ? false : true })
   }
 
   useEffect(() => {
-    setOpen(false)
-  }, [params[0]])
-
+    dispatch({ type: "SET_IS_OPEN", isOpen: false })
+  }, [param])
+  const isMainPage =
+    param === "books" || param === "my-books" || param === "my-trades"
   return (
     <React.Fragment>
       <header className={styles.header}>
@@ -41,7 +42,7 @@ function Navbar() {
             <li className={styles.navItem}>
               <Link
                 className={
-                  params[0] === "books" || (!params[0] && authState.username)
+                  param === "books" || (!param && authState.username)
                     ? styles.navItemTextActive
                     : styles.navItemText
                 }
@@ -78,7 +79,7 @@ function Navbar() {
                 <li className={styles.navItem}>
                   <Link
                     className={
-                      params[0] === "my-books"
+                      param === "my-books"
                         ? styles.navItemTextActive
                         : styles.navItemText
                     }
@@ -92,7 +93,7 @@ function Navbar() {
                 <li className={styles.navItem}>
                   <Link
                     className={
-                      params[0] === "my-trades"
+                      param === "my-trades"
                         ? styles.navItemTextActive
                         : styles.navItemText
                     }
@@ -110,7 +111,7 @@ function Navbar() {
               <li className={styles.navItem}>
                 <Link
                   className={
-                    params[0] === "my-profile"
+                    param === "my-profile"
                       ? styles.navItemTextActive
                       : styles.navItemText
                   }
@@ -133,7 +134,7 @@ function Navbar() {
               </li>
             </ul>
           ) : null}
-          {!isLG && params[0] && !(params[0] === "my-profile" && isSM) ? (
+          {isXS || (!isLG && isMainPage) ? (
             <>
               <HamburgerMenu
                 toggleHamburger={toggleHamburger}

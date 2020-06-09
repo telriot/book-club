@@ -4,7 +4,7 @@ module.exports = {
   async editUser(req, res, next) {
     const { username } = req.params
     const updateObj = req.body
-    const user = await User.findOneAndUpdate({ username }, updateObj)
+    await User.findOneAndUpdate({ username }, updateObj)
 
     res.send("user update successful")
   },

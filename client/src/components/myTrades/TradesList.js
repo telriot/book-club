@@ -16,7 +16,7 @@ function TradesList(props) {
   const { inOut } = state
   const [page, setPage] = useState(1)
   const [pages, setPages] = useState(1)
-  const [maxResults, setMaxResults] = useState(10)
+  const [maxResults] = useState(10)
   const history = useHistory()
 
   const handleAccept = (id, author, receiver, bookIn) => async () => {
@@ -62,7 +62,7 @@ function TradesList(props) {
   useEffect(() => {
     setPage(1)
     setPages(Math.ceil(data.length / maxResults))
-  }, [data])
+  }, [data, maxResults])
   const TradeRequest = ({ data }) => {
     const { author, receiver, bookIn, status, date, _id } = data
 
@@ -98,7 +98,7 @@ function TradesList(props) {
     )
   }
   return (
-    <>
+    <div className={styles.tableDiv}>
       <table className={styles.table}>
         <thead className={inOut === "out" ? styles.headerAlt : styles.header}>
           <tr>
@@ -110,29 +110,30 @@ function TradesList(props) {
           </tr>
         </thead>
         <tbody className={styles.body}>{data && renderPage(data)}</tbody>
-        {!data.length ? (
-          state.isLoading ? (
-            <div className={styles.spinner}>
-              <Loader
-                type="Puff"
-                color={inOut === "in" ? "#2ec4b6" : "#e71d36"}
-                height={100}
-                width={100}
-                timeout={3000} //3 secs
-              />
-            </div>
-          ) : (
-            <tfoot className={styles.error}>No trades yet</tfoot>
-          )
-        ) : null}
       </table>
+      {!data.length ? (
+        state.isLoading ? (
+          <div className={styles.spinner}>
+            <Loader
+              type="Puff"
+              color={inOut === "in" ? "#2ec4b6" : "#e71d36"}
+              height={100}
+              width={100}
+              timeout={3000} //3 secs
+            />
+          </div>
+        ) : (
+          <p className={styles.error}>No trades yet</p>
+        )
+      ) : null}
+
       <Pagination
         page={page}
         pages={pages}
         displayedResults={data}
         setPage={setPage}
       />
-    </>
+    </div>
   )
 }
 

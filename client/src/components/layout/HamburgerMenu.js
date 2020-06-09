@@ -1,8 +1,11 @@
-import React from "react"
+import React, { useContext } from "react"
 import styles from "./Navbar.module.scss"
+import { AppContext } from "../../contexts/AppContext"
 
 function HamburgerMenu(props) {
-  const { toggleHamburger, isOpen } = props
+  const { state } = useContext(AppContext)
+  const { isOpen } = state
+  const { toggleHamburger } = props
   return (
     <div className={styles.hamburger}>
       <button

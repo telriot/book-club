@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useCallback } from "react"
 import { SearchContext } from "../../contexts/SearchContext"
 import DropdownInput from "../bits/DropdownInput"
 import useDebounce from "../../hooks/useDebounce"
@@ -21,51 +21,54 @@ function NewBook() {
 
   const GOOGLE_API_URL = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}${languageRestrictions}${startIndex}${maxResults}&key=AIzaSyA-VAYQEfoIlFHypONP6mr0GlIYKnUMeT4`
 
-  const findBooks = async () => {
-    dispatch({ type: "SET_IS_LOADING", isLoading: true })
+  const findBooks = useCallback(
+    async (url) => {
+      dispatch({ type: "SET_IS_LOADING", isLoading: true })
 
-    searchDispatch({ type: "TOGGLE_IS_SEARCHING" })
-    let data = { results: [], totalItems: 0, totalPages: 0 }
-    try {
-      const response = await axios.get(`${GOOGLE_API_URL}`)
-      data.results = response.data.items.map((item) => ({
-        info: item.volumeInfo,
-        googleId: item.id,
-      }))
-      data.totalItems = response.data.totalItems
-      data.totalPages = Math.ceil(
-        response.data.totalItems / searchState.maxResults
-      )
-      searchDispatch({
-        type: "SET_RESULTS",
-        data,
-      })
-      dispatch({ type: "SET_IS_LOADING", isLoading: false })
-    } catch (error) {
-      console.log(error)
-      searchDispatch({ type: "SET_RESULTS", data })
-      dispatch({ type: "SET_IS_LOADING", isLoading: false })
-    }
-  }
+      searchDispatch({ type: "TOGGLE_IS_SEARCHING" })
+      let data = { results: [], totalItems: 0, totalPages: 0 }
+      try {
+        const response = await axios.get(`${url}`)
+        data.results = response.data.items.map((item) => ({
+          info: item.volumeInfo,
+          googleId: item.id,
+        }))
+        data.totalItems = response.data.totalItems
+        data.totalPages = Math.ceil(
+          response.data.totalItems / searchState.maxResults
+        )
+        searchDispatch({
+          type: "SET_RESULTS",
+          data,
+        })
+        dispatch({ type: "SET_IS_LOADING", isLoading: false })
+      } catch (error) {
+        console.log(error)
+        searchDispatch({ type: "SET_RESULTS", data })
+        dispatch({ type: "SET_IS_LOADING", isLoading: false })
+      }
+    },
+    [searchState.maxResults]
+  )
 
   useEffect(() => {
-    searchTerm.length > 2 && findBooks()
-  }, [searchTerm])
+    searchTerm.length > 2 && findBooks(GOOGLE_API_URL)
+  }, [searchTerm, findBooks])
 
   useEffect(() => {
     if (languageFilter && searchTerm.length > 2) {
       searchDispatch({ type: "SET_PAGE", page: 1 })
-      findBooks()
+      findBooks(GOOGLE_API_URL)
       searchDispatch({ type: "SET_DISPLAY", display: true })
     }
-  }, [languageFilter])
+  }, [languageFilter, findBooks, searchTerm])
 
   useEffect(() => {
     if (searchState.page && searchTerm.length > 2) {
-      findBooks()
+      findBooks(GOOGLE_API_URL)
       searchDispatch({ type: "SET_DISPLAY", display: true })
     }
-  }, [searchState.page])
+  }, [searchState.page, findBooks])
   return (
     <div className={styles.container}>
       <DropdownInput placeholder="Find a book" />

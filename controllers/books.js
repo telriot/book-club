@@ -39,7 +39,6 @@ module.exports = {
 
   async getBookDetail(req, res, next) {
     const { googleId } = req.params
-    console.log(googleId)
     const book = await Book.findOne({ googleId }).populate("users").exec()
     res.send(book)
   },
@@ -48,7 +47,7 @@ module.exports = {
     const { username } = req.params
     const volume = req.body
     const { info, googleId } = volume
-    console.log(volume)
+
     let user = await User.findOne({ username })
     let book = await Book.findOne({ googleId })
     if (!book) {
@@ -56,7 +55,6 @@ module.exports = {
     }
     let alreadyHave = false
     for (let usersBook of user.books) {
-      console.log(usersBook.googleId, book.googleId)
       if (usersBook.googleId === book.googleId) {
         alreadyHave = true
         res.send("you have this book already")

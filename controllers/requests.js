@@ -8,7 +8,7 @@ module.exports = {
       .populate("requestsIn")
       .populate("requestsOut")
       .exec()
-    console.log(user)
+
     if (user) {
       const { requestsIn, requestsOut } = user
       res.send({ requestsIn, requestsOut })
@@ -22,7 +22,6 @@ module.exports = {
       .populate("requestsOut")
       .exec()
     const receiverUser = await User.findById(receiver.id)
-    console.log(author, receiver, bookIn)
     if (authorUser && receiverUser) {
       const request = await Request.create({
         author,

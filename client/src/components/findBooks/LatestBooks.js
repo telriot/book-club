@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useState, useCallback } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
 import axios from "axios"
@@ -10,9 +10,9 @@ function LatestBooks() {
   const { books } = state
   const [display, setDisplay] = useState([])
 
-  const getMyBooks = async () => {
+  const getMyBooks = useCallback(async (username) => {
     try {
-      const response = await axios.get(`/api/books/${authState.username}`)
+      const response = await axios.get(`/api/books/${username}`)
       const books = response.data
       dispatch({ type: "SET_BOOKS", data: { books } })
     } catch (error) {
@@ -21,7 +21,7 @@ function LatestBooks() {
     return () => {
       dispatch({ type: "RESET_BOOKS" })
     }
-  }
+  }, [])
 
   const getLastFive = (arr) => {
     let display = []
@@ -37,8 +37,8 @@ function LatestBooks() {
   }
 
   useEffect(() => {
-    authState.username && getMyBooks()
-  }, [authState])
+    authState.username && getMyBooks(authState.username)
+  }, [authState, getMyBooks])
 
   useEffect(() => {
     books.length && getLastFive(books)

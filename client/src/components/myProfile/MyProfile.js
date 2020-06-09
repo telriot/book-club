@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react"
+import React, { useContext, useEffect, useRef, useCallback } from "react"
 import { AuthContext } from "../../contexts/AuthContext"
 import Autocomplete from "../bits/Autocomplete"
 import Button from "../bits/Button"
@@ -37,19 +37,19 @@ const MyProfile = () => {
     }
   }
 
-  const getUserInfo = async () => {
+  const getUserInfo = useCallback(async (username) => {
     try {
-      const results = await axios.get(`/api/users/${authState.username}`)
+      const results = await axios.get(`/api/users/${username}`)
       const user = results.data
       formikRef.current.setValues(user)
     } catch (error) {
       console.log(error)
     }
-  }
+  }, [])
   useEffect(() => {
     window.scrollTo(0, 0)
-    if (authState.username) getUserInfo()
-  }, [authState])
+    if (authState.username) getUserInfo(authState.username)
+  }, [authState.username, getUserInfo])
 
   return (
     <div className={styles.container}>

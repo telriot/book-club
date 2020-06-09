@@ -1,16 +1,22 @@
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
-.table {
+.tableDiv {
   grid-column: 1 / -1;
+  width: 100%;
+  position: relative;
+  display: flex;
 
+  justify-content: center;
+}
+.table {
   width: 90%;
   height: max-content;
   margin-top: 4rem;
-  justify-self: center;
+
   table-layout: fixed;
   border-collapse: collapse;
-  position: relative;
+
   @include respond("xs") {
     width: 100%;
   }
@@ -134,7 +140,7 @@
 }
 .error {
   position: absolute;
-  top: 8rem;
+  top: 12rem;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -142,7 +148,7 @@
 }
 .spinner {
   position: absolute;
-  top: 8rem;
+  top: 12rem;
   left: 50%;
   transform: translateX(-50%);
 }

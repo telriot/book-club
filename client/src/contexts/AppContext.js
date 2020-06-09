@@ -1,4 +1,4 @@
-import React, { useReducer, createContext } from "react"
+import React, { useReducer, createContext, useCallback } from "react"
 import { TYPES } from "./types"
 import axios from "axios"
 const initialState = {
@@ -23,6 +23,7 @@ const initialState = {
   isAdding: false,
   isLoading: false,
   isConfirming: false,
+  isOpen: false,
   languageFilter: "",
   maxResults: 20,
   modal: false,
@@ -94,6 +95,11 @@ const AppContextProvider = ({ children }) => {
           ...state,
           isLoading: action.isLoading,
         }
+      case TYPES.SET_IS_OPEN:
+        return {
+          ...state,
+          isOpen: action.isOpen,
+        }
       case TYPES.SET_LANGUAGE_FILTER:
         return {
           ...state,
@@ -155,6 +161,7 @@ const AppContextProvider = ({ children }) => {
         return {
           ...state,
           modal: state.modal ? false : action.modal,
+          isOpen: false,
         }
       case TYPES.TOGGLE_IS_CONFIRMING:
         return {
@@ -184,23 +191,26 @@ const AppContextProvider = ({ children }) => {
   const handleInOut = () => {
     dispatch({ type: "TOGGLE_IN_OUT" })
   }
-  const getUserData = async (username, setPage, setPages) => {
-    dispatch({ type: "SET_IS_LOADING", isLoading: true })
-    try {
-      const response = await axios.get(`/api/users/public/${username}`)
-      const user = response.data
-      setPage(1)
-      setPages(Math.ceil(user.books.length / state.maxResults))
-      dispatch({ type: "SET_IS_LOADING", isLoading: false })
+  const getUserData = useCallback(
+    async (username, setPage, setPages) => {
+      dispatch({ type: "SET_IS_LOADING", isLoading: true })
+      try {
+        const response = await axios.get(`/api/users/public/${username}`)
+        const user = response.data
+        setPage(1)
+        setPages(Math.ceil(user.books.length / state.maxResults))
+        dispatch({ type: "SET_IS_LOADING", isLoading: false })
 
-      dispatch({ type: "SET_USER", user })
-    } catch (error) {
-      dispatch({ type: "SET_IS_LOADING", isLoading: false })
+        dispatch({ type: "SET_USER", user })
+      } catch (error) {
+        dispatch({ type: "SET_IS_LOADING", isLoading: false })
 
-      console.log(error)
-    }
-  }
-  const getMyTrades = async (username) => {
+        console.log(error)
+      }
+    },
+    [state.maxResults]
+  )
+  const getMyTrades = useCallback(async (username) => {
     dispatch({ type: "SET_IS_LOADING", isLoading: true })
 
     try {
@@ -214,7 +224,7 @@ const AppContextProvider = ({ children }) => {
 
       console.log(error)
     }
-  }
+  }, [])
 
   return (
     <AppContext.Provider

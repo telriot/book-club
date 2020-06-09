@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useCallback } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
 import BookCard from "../shared/BookCard"
@@ -15,32 +15,35 @@ function MyBooks() {
   const { authState } = useContext(AuthContext)
   const { page, pages, maxResults, books } = state
   const setPage = (page) => dispatch({ type: "SET_PAGE", page })
-  const getMyBooks = async () => {
-    dispatch({ type: "SET_IS_LOADING", isLoading: true })
+  const getMyBooks = useCallback(
+    async (username) => {
+      dispatch({ type: "SET_IS_LOADING", isLoading: true })
 
-    let data = { books: [], totalResults: 0, totalPages: 0 }
-    try {
-      const response = await axios.get(`/api/books/${authState.username}`)
-      data.books = response.data
-      data.totalResults = response.data.length
-      data.totalPages = Math.ceil(response.data.length / maxResults)
+      let data = { books: [], totalResults: 0, totalPages: 0 }
+      try {
+        const response = await axios.get(`/api/books/${username}`)
+        data.books = response.data
+        data.totalResults = response.data.length
+        data.totalPages = Math.ceil(response.data.length / maxResults)
 
-      dispatch({ type: "SET_BOOKS", data })
-      dispatch({ type: "SET_IS_LOADING", isLoading: false })
-    } catch (error) {
-      dispatch({ type: "SET_IS_LOADING", isLoading: false })
+        dispatch({ type: "SET_BOOKS", data })
+        dispatch({ type: "SET_IS_LOADING", isLoading: false })
+      } catch (error) {
+        dispatch({ type: "SET_IS_LOADING", isLoading: false })
 
-      console.log(error)
-    }
-    return () => {
-      dispatch({ type: "RESET_BOOKS" })
-    }
-  }
+        console.log(error)
+      }
+      return () => {
+        dispatch({ type: "RESET_BOOKS" })
+      }
+    },
+    [maxResults]
+  )
   useEffect(() => {
     window.scrollTo(0, 0)
-    authState.username && getMyBooks()
+    authState.username && getMyBooks(authState.username)
     return () => dispatch({ type: "SET_PAGE", page: 1 })
-  }, [authState, isAdding])
+  }, [authState, isAdding, getMyBooks])
 
   const renderPage = (arr) => {
     let books = []
