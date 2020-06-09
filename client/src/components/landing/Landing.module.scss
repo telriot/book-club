@@ -32,6 +32,12 @@
 .header {
   font-size: 4rem;
   color: $color-white;
+  @include respond("sm") {
+    font-size: 3.5rem;
+  }
+  @include respond("xs") {
+    font-size: 2.5rem;
+  }
 }
 .headerDiv {
   text-align: center;
@@ -58,8 +64,11 @@
     border: 1px solid $color-red;
     font-weight: 500;
   }
-
+  @include respond("sm") {
+    font-size: 1.6rem;
+  }
   @include respond("xs") {
-    padding: 0.6rem 1.6rem;
+    font-size: 1.4rem;
+    padding: 0.8rem 1.8rem;
   }
 }
