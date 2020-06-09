@@ -37,6 +37,9 @@
 .navRight {
   display: flex;
   justify-content: flex-end;
+  &:last-child {
+    margin-right: 2rem;
+  }
 }
 .hamburger {
   display: flex;
@@ -77,4 +80,8 @@
     font-size: 1.3rem;
     padding: 0.3rem;
   }
+}
+.navItemTextActive {
+  @extend .navItemText;
+  color: $color-red;
 }

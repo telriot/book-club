@@ -1,19 +1,20 @@
 import React, { useContext, useEffect } from "react"
 import { AppContext } from "../../contexts/AppContext"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 import useDebounce from "../../hooks/useDebounce"
 import BookCard from "../shared/BookCard"
 import Pagination from "../bits/Pagination"
 import SideBar from "../layout/SideBar"
 import styles from "./AllBooks.module.scss"
 import axios from "axios"
-import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 function AllBooks() {
   const { state, dispatch } = useContext(AppContext)
+  const { isLG } = useContext(WindowSizeContext)
   const { page, pages, maxResults, books, languageFilter, sortOrder } = state
-  const { isXS, isSM, isMD, isLG } = useContext(WindowSizeContext)
   const debouncedTitle = useDebounce(state.titleFilter, 500)
   const debouncedAuthor = useDebounce(state.authorFilter, 500)
+
   const getAllBooks = async () => {
     let data = { books: [], totalResults: 0, totalPages: 0 }
     try {
@@ -41,8 +42,16 @@ function AllBooks() {
   const setPage = (page) => dispatch({ type: "SET_PAGE", page })
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+    dispatch({ type: "SET_PAGE", page: 1 })
+    return () => dispatch({ type: "SET_PAGE", page: 1 })
+  }, [])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
     getAllBooks()
   }, [page, languageFilter, sortOrder])
+
   useEffect(() => {
     if (
       debouncedTitle ||
@@ -51,6 +60,7 @@ function AllBooks() {
     )
       getAllBooks()
   }, [debouncedTitle])
+
   useEffect(() => {
     if (
       debouncedAuthor ||
@@ -59,11 +69,6 @@ function AllBooks() {
     )
       getAllBooks()
   }, [debouncedAuthor])
-  useEffect(() => {
-    window.scrollTo(0, 0)
-    dispatch({ type: "SET_PAGE", page: 1 })
-    return () => dispatch({ type: "SET_PAGE", page: 1 })
-  }, [])
 
   return (
     <div className={styles.container}>

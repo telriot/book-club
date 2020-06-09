@@ -10,7 +10,7 @@ import axios from "axios"
 
 function BookDetail() {
   const params = useParams()
-  const { state, dispatch } = useContext(AppContext)
+  const { state, dispatch, getMyTrades } = useContext(AppContext)
   const { authState } = useContext(AuthContext)
 
   const { users } = state.bookDetail
@@ -22,25 +22,15 @@ function BookDetail() {
       dispatch({ type: "SET_BOOK_DETAIL", bookDetail })
     } catch (error) {}
   }
-  const getMyTrades = async () => {
-    try {
-      const response = await axios.get(`/api/requests/${authState.username}`)
-      const { requestsIn, requestsOut } = response.data
-      dispatch({ type: "SET_TRADES", trades: { requestsIn, requestsOut } })
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   useEffect(() => {
     getBookDetail()
-
     return () => {
       dispatch({ type: "RESET_BOOK_DETAIL" })
     }
   }, [])
   useEffect(() => {
-    authState.username && getMyTrades()
+    authState.username && getMyTrades(authState.username)
   }, [authState.username])
 
   return (

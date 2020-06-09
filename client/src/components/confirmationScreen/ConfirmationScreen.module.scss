@@ -2,18 +2,24 @@
 @import "../../styles/mixins.scss";
 .container {
   @include main-grid;
+  @include respond("md") {
+    grid-template-rows: [top-gutter-start]18rem [top-gutter-end main-start]1fr[main-end pagination-start]5rem[pagination-end];
+  }
 }
 .main {
   @include main-books;
 }
 .sideBar {
-  grid-column: sidebar-start/sidebar-end;
-  grid-row: main-start/main-end;
+  @include sidebar;
+}
+.headerTop {
+  grid-column: main-start/main-end;
+  grid-row: top-gutter-start/main-start;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
-  padding-top: 3rem;
+  margin-bottom: 2.5rem;
 }
 .header {
   font-size: 2rem;
@@ -24,7 +30,15 @@
   font-size: 4rem;
   font-weight: 500;
   letter-spacing: 0.2rem;
+  @include respond("md") {
+    margin-bottom: 1.2rem;
+  }
 }
 .location {
-  font-weight: 400;
+  display: flex;
+  align-items: center;
+  p {
+    font-size: 1.4rem;
+    margin-right: 1rem;
+  }
 }

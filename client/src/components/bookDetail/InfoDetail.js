@@ -1,14 +1,12 @@
 import React, { useContext } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import { WindowSizeContext } from "../../contexts/WindowSizeContext"
-
 import styles from "./InfoDetail.module.scss"
 import missingCover from "../../assets/NoCover.png"
 
 function InfoDetail() {
   const { state } = useContext(AppContext)
-  const { isXS, isSM, isMD, isLG } = useContext(WindowSizeContext)
-
+  const { isSM } = useContext(WindowSizeContext)
   const { info } = state.bookDetail
 
   const ImageLink = () => (

@@ -2,17 +2,18 @@ import React, { useContext, useState, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
-import styles from "./Navbar.module.scss"
 import { WindowSizeContext } from "../../contexts/WindowSizeContext"
+import HamburgerMenu from "./HamburgerMenu"
 import NavbarDropdown from "./NavbarDropdown"
+import styles from "./Navbar.module.scss"
 
 function Navbar() {
   const { dispatch } = useContext(AppContext)
   const { authState, handleLogout } = useContext(AuthContext)
   const { isSM, isLG } = useContext(WindowSizeContext)
+  const [isOpen, setOpen] = useState(false)
   const { username } = authState
   const params = useParams()
-  const [isOpen, setOpen] = useState(false)
 
   const handleModal = (e) => {
     e.persist()
@@ -38,7 +39,14 @@ function Navbar() {
         <nav className={styles.nav}>
           <ul className={styles.navLeft}>
             <li className={styles.navItem}>
-              <Link className={styles.navItemText} to="/books">
+              <Link
+                className={
+                  params[0] === "books" || (!params[0] && authState.username)
+                    ? styles.navItemTextActive
+                    : styles.navItemText
+                }
+                to="/books"
+              >
                 All Books
               </Link>
             </li>
@@ -69,7 +77,11 @@ function Navbar() {
               <>
                 <li className={styles.navItem}>
                   <Link
-                    className={styles.navItemText}
+                    className={
+                      params[0] === "my-books"
+                        ? styles.navItemTextActive
+                        : styles.navItemText
+                    }
                     name="my-books"
                     to="/my-books"
                   >
@@ -79,7 +91,11 @@ function Navbar() {
 
                 <li className={styles.navItem}>
                   <Link
-                    className={styles.navItemText}
+                    className={
+                      params[0] === "my-trades"
+                        ? styles.navItemTextActive
+                        : styles.navItemText
+                    }
                     name="my-trades"
                     to="/my-trades"
                   >
@@ -91,17 +107,20 @@ function Navbar() {
           </ul>
           {username && isSM ? (
             <ul className={styles.navRight}>
-              {params[0] !== "my-profile" ? (
-                <li className={styles.navItem}>
-                  <Link
-                    className={styles.navItemText}
-                    name="my-profile"
-                    to="/my-profile"
-                  >
-                    My Profile
-                  </Link>
-                </li>
-              ) : null}
+              <li className={styles.navItem}>
+                <Link
+                  className={
+                    params[0] === "my-profile"
+                      ? styles.navItemTextActive
+                      : styles.navItemText
+                  }
+                  name="my-profile"
+                  to="/my-profile"
+                >
+                  My Profile
+                </Link>
+              </li>
+
               <li className={styles.navItem}>
                 <Link
                   className={styles.navItemText}
@@ -116,21 +135,10 @@ function Navbar() {
           ) : null}
           {!isLG && params[0] && !(params[0] === "my-profile" && isSM) ? (
             <>
-              <div className={styles.hamburger}>
-                <button
-                  onClick={toggleHamburger}
-                  className={
-                    isOpen
-                      ? "hamburger hamburger--slider is-active"
-                      : "hamburger hamburger--slider"
-                  }
-                  type="button"
-                >
-                  <span className="hamburger-box">
-                    <span className="hamburger-inner"></span>
-                  </span>
-                </button>
-              </div>
+              <HamburgerMenu
+                toggleHamburger={toggleHamburger}
+                isOpen={isOpen}
+              />
               <NavbarDropdown isOpen={isOpen} />
             </>
           ) : null}

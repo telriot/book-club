@@ -1,28 +1,20 @@
 import React, { useContext, useEffect } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 import SideBar from "../layout/SideBar"
 import TradesList from "./TradesList"
 import styles from "./MyTrades.module.scss"
-import axios from "axios"
-import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 function MyTrades() {
-  const { state, dispatch, handleInOut } = useContext(AppContext)
+  const { state, dispatch, handleInOut, getMyTrades } = useContext(AppContext)
   const { authState } = useContext(AuthContext)
   const { inOut } = state
-  const { isSM, isMD, isLG } = useContext(WindowSizeContext)
-  const getMyTrades = async () => {
-    try {
-      const response = await axios.get(`/api/requests/${authState.username}`)
-      const { requestsIn, requestsOut } = response.data
-      dispatch({ type: "SET_TRADES", trades: { requestsIn, requestsOut } })
-    } catch (error) {}
-  }
+  const { isLG } = useContext(WindowSizeContext)
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    authState.username && getMyTrades()
+    authState.username && getMyTrades(authState.username)
     return () => {
       dispatch({ type: "RESET_BOOK_DETAIL" })
     }

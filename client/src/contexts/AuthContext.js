@@ -4,9 +4,9 @@ import { TYPES } from "./types"
 import axios from "axios"
 
 const initialState = {
+  id: null,
   isAuthenticated: false,
   username: null,
-  id: null,
 }
 export const AuthContext = createContext(initialState)
 
@@ -49,9 +49,6 @@ const AuthContextProvider = ({ children }) => {
       console.log(error)
     }
   }
-  useEffect(() => {
-    getAuth()
-  }, [])
 
   const handleLogout = async () => {
     try {
@@ -63,6 +60,10 @@ const AuthContextProvider = ({ children }) => {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    getAuth()
+  }, [])
   return (
     <AuthContext.Provider value={{ authState, authDispatch, handleLogout }}>
       {children}

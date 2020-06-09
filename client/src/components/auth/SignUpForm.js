@@ -6,10 +6,9 @@ import TextInput from "../bits/TextInput"
 import validators from "../../helpers/validators"
 import styles from "./AuthForm.module.scss"
 import selectStyles from "../bits/Select.module.scss"
+import countries from "../../data/countries.json"
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
-import countries from "../../data/countries.json"
-
 import axios from "axios"
 
 const SignUpForm = () => {

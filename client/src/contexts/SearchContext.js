@@ -1,16 +1,16 @@
 import React, { useReducer, createContext } from "react"
 import { TYPES } from "./types"
 const initialState = {
-  input: "",
-  results: [],
-  displayedResults: [],
-  isSearching: false,
   display: false,
+  displayedResults: [],
+  input: "",
+  isSearching: false,
   languageFilter: "",
-  totalResults: 0,
-  page: 1,
   maxResults: 10,
+  page: 1,
   pages: 0,
+  results: [],
+  totalResults: 0,
 }
 export const SearchContext = createContext(initialState)
 
@@ -28,26 +28,15 @@ const SearchContextProvider = ({ children }) => {
               input: action.input,
               results: [],
             }
-      case TYPES.SET_RESULTS:
+      case TYPES.HANDLE_ENTER_KEY:
         return {
           ...state,
-          results: action.data.results,
-          isSearching: false,
-          displayedResults: state.display
-            ? action.data.results
-            : state.displayedResults,
-          display: false,
-          totalResults: action.data.totalItems,
-          pages: action.data.totalPages,
+
+          displayedResults: state.results,
         }
       case TYPES.RESET_RESULTS:
         return {
           ...initialState,
-        }
-      case TYPES.TOGGLE_IS_SEARCHING:
-        return {
-          ...state,
-          isSearching: state.isSearching ? false : true,
         }
       case TYPES.SET_DISPLAY:
         return {
@@ -64,11 +53,22 @@ const SearchContextProvider = ({ children }) => {
           ...state,
           page: action.page,
         }
-      case TYPES.HANDLE_ENTER_KEY:
+      case TYPES.SET_RESULTS:
         return {
           ...state,
-
-          displayedResults: state.results,
+          results: action.data.results,
+          isSearching: false,
+          displayedResults: state.display
+            ? action.data.results
+            : state.displayedResults,
+          display: false,
+          totalResults: action.data.totalItems,
+          pages: action.data.totalPages,
+        }
+      case TYPES.TOGGLE_IS_SEARCHING:
+        return {
+          ...state,
+          isSearching: state.isSearching ? false : true,
         }
       default:
         return state

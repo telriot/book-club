@@ -21,6 +21,7 @@ function Pagination(props) {
     }
     return items
   }
+
   return displayedResults.length ? (
     <div className={styles.wrapper}>
       {page !== 1 ? (

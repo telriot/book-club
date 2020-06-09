@@ -1,23 +1,22 @@
 import React, { useContext, useState, useEffect } from "react"
-import styles from "./SideBar.module.scss"
 import { AppContext } from "../../contexts/AppContext"
 import { SearchContext } from "../../contexts/SearchContext"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
+import SelectFilter from "../bits/SelectFilter"
 import { deepCopy } from "../../helpers/functions"
+import styles from "./SideBar.module.scss"
 import sortOptionsMyBooks from "../../data/sortOptionsMyBooks.json"
 import sortOptionsTrades from "../../data/sortOptionsTrades.json"
-import SelectFilter from "../bits/SelectFilter"
-import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
-function SideBarBtn(props) {
+function DynamicFilter(props) {
   const { text, param, myTrades, dropdown } = props
   const { state, dispatch } = useContext(AppContext)
   const { searchState, searchDispatch } = useContext(SearchContext)
-  const { books, isAdding, inOut } = state
-  const { displayedResults } = searchState
+  const { isXS } = useContext(WindowSizeContext)
   const [selectSort, setSelectSort] = useState("")
   const [selectSortTrades, setSelectSortTrades] = useState("")
-
-  const { isXS } = useContext(WindowSizeContext)
+  const { books, isAdding, inOut } = state
+  const { displayedResults } = searchState
 
   const handleSort = (sortParam, books, search) => () => {
     console.log(sortParam)
@@ -42,6 +41,7 @@ function SideBarBtn(props) {
     dispatch({ type: "SET_SORT", sort: sortParam, sortedBooks: booksCopy })
     search && searchDispatch({ type: "SET_DISPLAY", display: booksCopy })
   }
+
   const handleSortTrades = (sortParam, trades) => () => {
     let tradesCopy = deepCopy(trades)
     if (sortParam === "status") {
@@ -77,12 +77,12 @@ function SideBarBtn(props) {
         return dateB - dateA
       })
     }
-
     dispatch({
       type: "SET_TRADES_SORT",
       data: { sortedTrades: tradesCopy, sortParam },
     })
   }
+
   const btnClassName = (name) => {
     if (myTrades) {
       if (inOut === "in") {
@@ -96,6 +96,7 @@ function SideBarBtn(props) {
       return state.sort === name ? styles.buttonActive : styles.button
     }
   }
+
   useEffect(() => {
     if (selectSort) {
       state.isAdding
@@ -103,9 +104,11 @@ function SideBarBtn(props) {
         : handleSort(selectSort, books)()
     }
   }, [selectSort])
+
   useEffect(() => {
     selectSortTrades && handleSortTrades(selectSortTrades, state.trades)()
   }, [selectSortTrades])
+
   return dropdown === "my-books" ? (
     <SelectFilter
       options={sortOptionsMyBooks}
@@ -138,4 +141,4 @@ function SideBarBtn(props) {
   )
 }
 
-export default SideBarBtn
+export default DynamicFilter

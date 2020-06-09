@@ -16,7 +16,6 @@ function MyBooks() {
   const setPage = (page) => dispatch({ type: "SET_PAGE", page })
   const getMyBooks = async () => {
     let data = { books: [], totalResults: 0, totalPages: 0 }
-
     try {
       const response = await axios.get(`/api/books/${authState.username}`)
       data.books = response.data

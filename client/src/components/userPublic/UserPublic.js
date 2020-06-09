@@ -6,28 +6,15 @@ import Pagination from "../bits/Pagination"
 import styles from "./UserPublic.module.scss"
 import "../../styles/flags.css"
 import placeholder from "../../styles/img/flag_placeholder.png"
-import axios from "axios"
 
 function UserPublic() {
-  const { state, dispatch } = useContext(AppContext)
+  const { state, dispatch, getUserData } = useContext(AppContext)
   const params = useParams()
   const { user, maxResults } = state
   const { username, city, country, books } = user
   const [page, setPage] = useState(1)
   const [pages, setPages] = useState(0)
 
-  const getUser = async () => {
-    try {
-      const response = await axios.get(`/api/users/public/${params.username}`)
-      const user = response.data
-      console.log(user)
-      setPage(1)
-      setPages(Math.ceil(user.books.length / maxResults))
-      dispatch({ type: "SET_USER", user })
-    } catch (error) {
-      console.log(error)
-    }
-  }
   const renderPage = (arr) => {
     let books = []
     const startIndex = (page - 1) * maxResults
@@ -39,7 +26,7 @@ function UserPublic() {
   }
 
   useEffect(() => {
-    getUser()
+    getUserData(params.username, setPage, setPages)
     return () => {
       dispatch({ type: "RESET_USER" })
     }

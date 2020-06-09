@@ -1,17 +1,17 @@
 import React, { useContext, useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 import Pagination from "../bits/Pagination"
 import styles from "./TradesList.module.scss"
 import axios from "axios"
 import moment from "moment"
 import { MdThumbUp, MdThumbDown } from "react-icons/md"
-import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 function TradesList(props) {
   const { data, refreshTrades } = props
   const { state, dispatch } = useContext(AppContext)
-  const { isXS, isSM, isMD } = useContext(WindowSizeContext)
+  const { isSM } = useContext(WindowSizeContext)
   const { inOut } = state
   const [page, setPage] = useState(1)
   const [pages, setPages] = useState(1)

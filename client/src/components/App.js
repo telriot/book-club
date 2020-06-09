@@ -18,9 +18,12 @@ import UserPublic from "./userPublic/UserPublic"
 import ConfirmationScreen from "./confirmationScreen/ConfirmationScreen"
 import ConfirmDeletion from "./shared/ConfirmDeletion"
 import WindowSizeContextProvider from "../contexts/WindowSizeContext"
+import { AuthContext } from "../contexts/AuthContext"
 
 function App() {
   const { state } = useContext(AppContext)
+  const { authState } = useContext(AuthContext)
+  const { username } = authState
   return (
     <React.Fragment>
       <SearchContextProvider>
@@ -31,32 +34,31 @@ function App() {
           <div className={styles.container}>
             <Switch>
               <Route exact path="/">
-                <Landing />
+                {username ? <AllBooks /> : <Landing />}
               </Route>
               <Route exact path="/books">
                 <AllBooks />
               </Route>
-
               <Route exact path="/my-books">
-                <MyBooks />
+                {username ? <MyBooks /> : <Landing />}
               </Route>
               <Route exact path="/find-books">
-                <FindBooks />
+                {username ? <FindBooks /> : <Landing />}
               </Route>
               <Route exact path="/my-profile">
-                <MyProfile />
+                {username ? <MyProfile /> : <Landing />}
               </Route>
               <Route exact path="/book/:googleId">
                 <BookDetail />
               </Route>
               <Route exact path="/my-trades">
-                <MyTrades />
+                {username ? <MyTrades /> : <Landing />}
               </Route>
               <Route exact path="/users/:username">
                 <UserPublic />
               </Route>
               <Route exact path="/confirm/:requestId">
-                <ConfirmationScreen />
+                {username ? <ConfirmationScreen /> : <Landing />}
               </Route>
             </Switch>
           </div>

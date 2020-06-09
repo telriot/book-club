@@ -17,7 +17,7 @@ const app = express()
 
 //Connect to the DB
 mongoose.connect(
-  /*process.env.MONGO_URI || */ `mongodb://localhost:27017/book-club`,
+  process.env.MONGO_URI || `mongodb://localhost:27017/book-club`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

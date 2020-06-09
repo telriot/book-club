@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import styles from "./SideBar.module.scss"
 import { AppContext } from "../../contexts/AppContext"
-import SideBarBtn from "./SideBarBtn"
+import { SearchContext } from "../../contexts/SearchContext"
+import DynamicFilter from "./DynamicFilter"
 import LatestBooks from "../findBooks/LatestBooks"
 import SelectFilter from "../bits/SelectFilter"
-import { SearchContext } from "../../contexts/SearchContext"
 import TextFilter from "../bits/TextFilter"
 import languages from "../../data/languages.json"
 import sortOptions from "../../data/sortOptions.json"
@@ -39,7 +39,7 @@ function SideBar(props) {
           )}
           <h2 className={styles.header}>Sort by</h2>
           {sortOptionsTrades.map((option, index) => (
-            <SideBarBtn
+            <DynamicFilter
               key={`btn-${index}`}
               myTrades={true}
               text={option.name}
@@ -55,7 +55,7 @@ function SideBar(props) {
 
           <h2 className={styles.header}>Sort by</h2>
           {sortOptionsMyBooks.map((option, index) => (
-            <SideBarBtn
+            <DynamicFilter
               key={`btn-${index}`}
               text={option.name}
               param={option.code}
