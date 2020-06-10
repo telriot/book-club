@@ -103,16 +103,19 @@ function DynamicFilter(props) {
   }
 
   useEffect(() => {
+    selectSortTrades && handleSortTrades(selectSortTrades, state.trades)()
     if (selectSort) {
       state.isAdding
         ? handleSort(selectSort, books, true)()
         : handleSort(selectSort, books)()
     }
-  }, [selectSort, state.isAdding, handleSort])
-
-  useEffect(() => {
-    selectSortTrades && handleSortTrades(selectSortTrades, state.trades)()
-  }, [selectSortTrades, handleSortTrades])
+  }, [
+    selectSort,
+    state.isAdding,
+    handleSort,
+    selectSortTrades,
+    handleSortTrades,
+  ])
 
   return dropdown === "my-books" ? (
     <SelectFilter

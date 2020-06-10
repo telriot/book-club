@@ -5,9 +5,9 @@ import useDebounce from "../../hooks/useDebounce"
 import BookCard from "../shared/BookCard"
 import Pagination from "../bits/Pagination"
 import SideBar from "../layout/SideBar"
-import Loader from "react-loader-spinner"
 import styles from "./AllBooks.module.scss"
 import axios from "axios"
+import LoaderSpinner from "../bits/LoaderSpinner"
 
 function AllBooks() {
   const { state, dispatch } = useContext(AppContext)
@@ -39,6 +39,7 @@ function AllBooks() {
       }
       dispatch({ type: "SET_BOOKS", data })
       dispatch({ type: "SET_IS_LOADING", isLoading: false })
+      window.scrollTo(0, 0)
     } catch (error) {
       console.log(error)
       dispatch({ type: "SET_IS_LOADING", isLoading: false })
@@ -56,46 +57,32 @@ function AllBooks() {
   useEffect(() => {
     window.scrollTo(0, 0)
     dispatch({ type: "SET_PAGE", page: 1 })
-    return () => dispatch({ type: "SET_PAGE", page: 1 })
+    dispatch({ type: "RESET_FILTERS" })
+    dispatch({ type: "RESET_BOOKS" })
+    return () => {
+      dispatch({ type: "SET_PAGE", page: 1 })
+      dispatch({ type: "RESET_BOOKS" })
+      dispatch({ type: "RESET_FILTERS" })
+    }
   }, [])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
     getAllBooks()
-  }, [page, languageFilter, sortOrder, getAllBooks])
-
-  useEffect(() => {
-    if (
-      debouncedTitle ||
-      debouncedAuthor ||
-      (!debouncedTitle && books.length !== 0)
-    )
-      getAllBooks()
-  }, [debouncedTitle])
-
-  useEffect(() => {
-    if (
-      debouncedAuthor ||
-      debouncedTitle ||
-      (!debouncedAuthor && books.length !== 0)
-    )
-      getAllBooks()
-  }, [debouncedAuthor])
+  }, [
+    debouncedTitle,
+    debouncedAuthor,
+    page,
+    languageFilter,
+    sortOrder,
+    getAllBooks,
+  ])
 
   return (
     <div className={styles.container}>
       {isLG ? <SideBar allBooks={true} /> : null}
       <div className={styles.main}>
         {state.isLoading ? (
-          <div className={styles.spinner}>
-            <Loader
-              type="Puff"
-              color={"#e71d36"}
-              height={100}
-              width={100}
-              timeout={3000} //3 secs
-            />
-          </div>
+          <LoaderSpinner />
         ) : state.books.length ? (
           state.books.map((item, index) => (
             <BookCard owners={true} item={item} key={`card-${index}`} />

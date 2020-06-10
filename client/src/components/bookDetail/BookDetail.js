@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
 import InfoDetail from "./InfoDetail"
+import LoaderSpinner from "../bits/LoaderSpinner"
 import UserDetail from "./UserDetail"
-import Loader from "react-loader-spinner"
 import styles from "./BookDetail.module.scss"
 import axios from "axios"
 
@@ -51,15 +51,7 @@ function BookDetail() {
       <div className={styles.main}>
         <h2 className={styles.mainHeader}>Owned by</h2>
         {state.isLoading ? (
-          <div className={styles.spinner}>
-            <Loader
-              type="Puff"
-              color={"#e71d36"}
-              height={100}
-              width={100}
-              timeout={3000} //3 secs
-            />
-          </div>
+          <LoaderSpinner />
         ) : users ? (
           users.map((user, index) => (
             <UserDetail

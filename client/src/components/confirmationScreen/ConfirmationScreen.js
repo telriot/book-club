@@ -4,9 +4,9 @@ import { AppContext } from "../../contexts/AppContext"
 import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 import BookCard from "../shared/BookCard"
 import Pagination from "../bits/Pagination"
-import Loader from "react-loader-spinner"
 import placeholder from "../../styles/img/flag_placeholder.png"
 import styles from "./ConfirmationScreen.module.scss"
+import LoaderSpinner from "../bits/LoaderSpinner"
 
 function ConfirmationScreen() {
   const history = useHistory()
@@ -50,15 +50,7 @@ function ConfirmationScreen() {
   return (
     <div className={styles.container}>
       {state.isLoading ? (
-        <div className={styles.spinner}>
-          <Loader
-            type="Puff"
-            color={"#e71d36"}
-            height={100}
-            width={100}
-            timeout={3000} //3 secs
-          />
-        </div>
+        <LoaderSpinner />
       ) : (
         <>
           <div className={isLG ? styles.sideBar : styles.headerTop}>

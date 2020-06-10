@@ -61,12 +61,20 @@ const AppContextProvider = ({ children }) => {
           totalResults: initialState.totalResults,
           pages: initialState.totalPages,
         }
+      case TYPES.RESET_FILTERS:
+        return {
+          ...state,
+          authorFilter: "",
+          languageFilter: "",
+          titleFilter: "",
+        }
       case TYPES.RESET_USER:
         return {
           ...state,
           user: initialState.user,
           isConfirming: false,
         }
+
       case TYPES.SET_AUTHOR_FILTER:
         return {
           ...state,

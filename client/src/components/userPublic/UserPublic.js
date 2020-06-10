@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
+import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 import BookCard from "../shared/BookCard"
+import LoaderSpinner from "../bits/LoaderSpinner"
 import Pagination from "../bits/Pagination"
-import Loader from "react-loader-spinner"
 import styles from "./UserPublic.module.scss"
 import "../../styles/flags.css"
 import placeholder from "../../styles/img/flag_placeholder.png"
-import { WindowSizeContext } from "../../contexts/WindowSizeContext"
 
 function UserPublic() {
   const { state, dispatch, getUserData } = useContext(AppContext)
@@ -76,15 +76,7 @@ function UserPublic() {
       {!state.isLoading && isLG ? <UserSideBar /> : null}
 
       {state.isLoading ? (
-        <div className={styles.spinner}>
-          <Loader
-            type="Puff"
-            color={"#e71d36"}
-            height={100}
-            width={100}
-            timeout={3000} //3 secs
-          />
-        </div>
+        <LoaderSpinner />
       ) : (
         <>
           <div className={styles.topHeader}>

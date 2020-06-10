@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useRef, useCallback } from "react"
+import { AppContext } from "../../contexts/AppContext"
+
 import { AuthContext } from "../../contexts/AuthContext"
 import Autocomplete from "../bits/Autocomplete"
 import Button from "../bits/Button"
+import LoaderSpinner from "../bits/LoaderSpinner"
 import Select from "../bits/Select"
 import TextInput from "../bits/TextInput"
 import countries from "../../data/countries.json"
@@ -12,6 +15,7 @@ import { Formik, Form } from "formik"
 import * as Yup from "yup"
 
 const MyProfile = () => {
+  const { state, dispatch } = useContext(AppContext)
   const { authState } = useContext(AuthContext)
   const formikRef = useRef()
   const validationSchema = {
@@ -38,11 +42,15 @@ const MyProfile = () => {
   }
 
   const getUserInfo = useCallback(async (username) => {
+    dispatch({ type: "SET_IS_LOADING", isLoading: true })
+
     try {
       const results = await axios.get(`/api/users/${username}`)
       const user = results.data
       formikRef.current.setValues(user)
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
     } catch (error) {
+      dispatch({ type: "SET_IS_LOADING", isLoading: false })
       console.log(error)
     }
   }, [])
@@ -56,57 +64,61 @@ const MyProfile = () => {
       <h1 className={styles.header}>
         {authState.username ? `${authState.username}'s profile` : " "}
       </h1>
-      <Formik
-        innerRef={formikRef}
-        initialValues={{
-          firstName: "",
-          lastName: "",
-          city: "",
-          country: "",
-        }}
-        validationSchema={Yup.object(validationSchema)}
-        onSubmit={handleSubmit}
-      >
-        {({ values, isSubmitting }) => (
-          <Form className={styles.form}>
-            <TextInput
-              label="First Name"
-              labelShow={values.firstName}
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-            />
-            <TextInput
-              label="Last Name"
-              labelShow={values.lastName}
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-            />
-            <Select name="country" label="Country" labelShow={values.country}>
-              <option disabled key="option-null" value="">
-                Pick a Country
-              </option>
-              {countries.map((country, index) => (
-                <option key={`option-${index}`} value={country.Code}>
-                  {country.Name}
+      {state.isLoading ? (
+        <LoaderSpinner />
+      ) : (
+        <Formik
+          innerRef={formikRef}
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            city: "",
+            country: "",
+          }}
+          validationSchema={Yup.object(validationSchema)}
+          onSubmit={handleSubmit}
+        >
+          {({ values, isSubmitting }) => (
+            <Form className={styles.form}>
+              <TextInput
+                label="First Name"
+                labelShow={values.firstName}
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+              />
+              <TextInput
+                label="Last Name"
+                labelShow={values.lastName}
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+              />
+              <Select name="country" label="Country" labelShow={values.country}>
+                <option disabled key="option-null" value="">
+                  Pick a Country
                 </option>
-              ))}
-            </Select>
-            <Autocomplete
-              labelShow={values.city}
-              label="City"
-              type="text"
-              name="city"
-              country={values.country}
-              placeholder="Your city"
-            />
-            <div className={styles.btnDiv}>
-              <Button disabled={isSubmitting} type="submit" text="Update" />
-            </div>
-          </Form>
-        )}
-      </Formik>
+                {countries.map((country, index) => (
+                  <option key={`option-${index}`} value={country.Code}>
+                    {country.Name}
+                  </option>
+                ))}
+              </Select>
+              <Autocomplete
+                labelShow={values.city}
+                label="City"
+                type="text"
+                name="city"
+                country={values.country}
+                placeholder="Your city"
+              />
+              <div className={styles.btnDiv}>
+                <Button disabled={isSubmitting} type="submit" text="Update" />
+              </div>
+            </Form>
+          )}
+        </Formik>
+      )}
     </div>
   )
 }

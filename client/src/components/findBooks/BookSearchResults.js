@@ -4,6 +4,7 @@ import BookCard from "../shared/BookCard"
 import Loader from "react-loader-spinner"
 import styles from "./BookSearchResults.module.scss"
 import { AppContext } from "../../contexts/AppContext"
+import LoaderSpinner from "../bits/LoaderSpinner"
 
 function BookSearchResults() {
   const { state } = useContext(AppContext)
@@ -13,15 +14,7 @@ function BookSearchResults() {
   return (
     <div className={styles.container}>
       {state.isLoading && searchState.display ? (
-        <div className={styles.spinner}>
-          <Loader
-            type="Puff"
-            color={"#e71d36"}
-            height={100}
-            width={100}
-            timeout={3000} //3 secs
-          />
-        </div>
+        <LoaderSpinner />
       ) : displayedResults.length ? (
         displayedResults.map((item, index) => (
           <BookCard addBtn={true} item={item} key={`card-${index}`} />

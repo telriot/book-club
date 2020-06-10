@@ -5,9 +5,9 @@ import BookCard from "../shared/BookCard"
 import FindBooks from "../findBooks/FindBooks"
 import Pagination from "../bits/Pagination"
 import SideBar from "../layout/SideBar"
-import Loader from "react-loader-spinner"
 import styles from "./MyBooks.module.scss"
 import axios from "axios"
+import LoaderSpinner from "../bits/LoaderSpinner"
 
 function MyBooks() {
   const { state, dispatch } = useContext(AppContext)
@@ -42,7 +42,10 @@ function MyBooks() {
   useEffect(() => {
     window.scrollTo(0, 0)
     authState.username && getMyBooks(authState.username)
-    return () => dispatch({ type: "SET_PAGE", page: 1 })
+    return () => {
+      dispatch({ type: "RESET_BOOKS" })
+      dispatch({ type: "SET_PAGE", page: 1 })
+    }
   }, [authState, isAdding, getMyBooks])
 
   const renderPage = (arr) => {
@@ -66,15 +69,7 @@ function MyBooks() {
 
       <div className={styles.main}>
         {state.isLoading ? (
-          <div className={styles.spinner}>
-            <Loader
-              type="Puff"
-              color={"#e71d36"}
-              height={100}
-              width={100}
-              timeout={3000} //3 secs
-            />
-          </div>
+          <LoaderSpinner />
         ) : state.books.length ? (
           renderPage(state.books)
         ) : null}

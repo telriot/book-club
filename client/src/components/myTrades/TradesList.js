@@ -119,7 +119,7 @@ function TradesList(props) {
               color={inOut === "in" ? "#2ec4b6" : "#e71d36"}
               height={100}
               width={100}
-              timeout={3000} //3 secs
+              timeout={3000}
             />
           </div>
         ) : (
