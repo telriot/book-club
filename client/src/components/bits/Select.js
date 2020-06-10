@@ -6,9 +6,9 @@ const Select = ({ label, ...props }) => {
   const [field, meta] = useField(props)
   return (
     <div className={styles.wrapper}>
-      {props.label ? (
+      {label ? (
         <label className={styles.label} htmlFor={props.id || props.name}>
-          {label}
+          {props.labelShow && label}
         </label>
       ) : null}
       <select

@@ -71,17 +71,19 @@ const MyProfile = () => {
           <Form className={styles.form}>
             <TextInput
               label="First Name"
+              labelShow={values.firstName}
               type="text"
               name="firstName"
               placeholder="First Name"
             />
             <TextInput
               label="Last Name"
+              labelShow={values.lastName}
               type="text"
               name="lastName"
               placeholder="Last Name"
             />
-            <Select name="country">
+            <Select name="country" label="Country" labelShow={values.country}>
               <option disabled key="option-null" value="">
                 Pick a Country
               </option>
@@ -92,6 +94,7 @@ const MyProfile = () => {
               ))}
             </Select>
             <Autocomplete
+              labelShow={values.city}
               label="City"
               type="text"
               name="city"

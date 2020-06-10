@@ -126,7 +126,7 @@ function DynamicFilter(props) {
     <SelectFilter
       options={sortOptionsTrades}
       handleChange={setSelectSortTrades}
-      value={selectSort}
+      value={selectSortTrades}
       size={isXS ? "xs" : "small"}
       placeholder="Sort Results"
     />

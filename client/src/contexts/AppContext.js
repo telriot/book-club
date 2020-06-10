@@ -152,10 +152,12 @@ const AppContextProvider = ({ children }) => {
           ? {
               ...state,
               isAdding: false,
+              isOpen: false,
             }
           : {
               ...state,
               isAdding: state.isAdding ? false : true,
+              isOpen: false,
             }
       case TYPES.TOGGLE_MODAL:
         return {
