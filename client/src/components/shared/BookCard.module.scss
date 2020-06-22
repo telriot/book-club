@@ -24,7 +24,8 @@
 }
 .imageDivAdd {
   @extend .imageDiv;
-  &:hover {
+  &:hover,
+  &:focus {
     &::before {
       content: "";
       position: absolute;
@@ -87,4 +88,8 @@
   text-transform: uppercase;
   transition: all 0.3s;
   cursor: pointer;
+  &:hover,
+  &:focus {
+    color: $color-rich-black;
+  }
 }

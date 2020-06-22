@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 import { AppContext } from "../../contexts/AppContext"
 import Button from "../bits/Button"
 import Select from "../bits/Select"
@@ -21,6 +21,7 @@ const SignUpForm = () => {
     country: validators.stringRequired,
   }
   const formikRef = useRef()
+  const inputRef = useRef()
 
   const handleSubmit = async (values) => {
     const formik = formikRef.current
@@ -48,7 +49,9 @@ const SignUpForm = () => {
   const handleCancel = () => {
     dispatch({ type: "TOGGLE_MODAL" })
   }
-
+  useEffect(() => {
+    inputRef.current.focus()
+  }, [])
   return (
     <div className={styles.container}>
       <h2 className={styles.header}>Sign up</h2>
@@ -68,6 +71,7 @@ const SignUpForm = () => {
           <Form className={styles.form}>
             <p className={styles.error}>{errors.general}</p>
             <TextInput
+              innerRef={inputRef}
               label="Username"
               type="text"
               name="username"

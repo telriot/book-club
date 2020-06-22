@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react"
+import React, { useContext, useRef, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import { AppContext } from "../../contexts/AppContext"
 import { AuthContext } from "../../contexts/AuthContext"
@@ -19,6 +19,8 @@ const LogInForm = () => {
     password: validators.password,
   }
   const formikRef = useRef()
+  const inputRef = useRef()
+
   const handleSubmit = async (values) => {
     const formik = formikRef.current
     const { username, password } = values
@@ -47,7 +49,9 @@ const LogInForm = () => {
   const handleCancel = () => {
     dispatch({ type: "TOGGLE_MODAL" })
   }
-
+  useEffect(() => {
+    inputRef.current.focus()
+  }, [])
   return (
     <div className={styles.container}>
       <h2 className={styles.header}>Log in</h2>
@@ -64,6 +68,7 @@ const LogInForm = () => {
           <Form className={styles.form}>
             <p className={styles.error}>{errors.general}</p>
             <TextInput
+              innerRef={inputRef}
               label="Username"
               type="text"
               name="username"

@@ -11,6 +11,7 @@ const TextInput = ({ label, ...props }) => {
         {props.labelShow && label}
       </label>{" "}
       <input
+        ref={props.innerRef}
         type={props.type}
         className={styles.input}
         rows={props.rows}

@@ -17,6 +17,7 @@ function PaginationItem(props) {
 
   const PageItem = () => (
     <div
+      tabIndex={0}
       className={currentPage === page ? styles.itemActive : styles.item}
       onClick={handlePageSelection(page)}
     >
@@ -26,6 +27,7 @@ function PaginationItem(props) {
 
   const PagePrev = () => (
     <div
+      tabIndex={0}
       className={styles.itemIcon}
       onClick={handlePageSelection(currentPage - 1)}
     >
@@ -34,6 +36,7 @@ function PaginationItem(props) {
   )
   const PageNext = () => (
     <div
+      tabIndex={0}
       className={styles.itemIcon}
       onClick={handlePageSelection(currentPage + 1)}
     >
@@ -41,12 +44,17 @@ function PaginationItem(props) {
     </div>
   )
   const PageFirst = () => (
-    <div className={styles.itemIcon} onClick={handlePageSelection(1)}>
+    <div
+      tabIndex={0}
+      className={styles.itemIcon}
+      onClick={handlePageSelection(1)}
+    >
       <MdFirstPage />
     </div>
   )
   const PageLast = () => (
     <div
+      tabIndex={0}
       className={styles.itemIcon}
       onClick={handlePageSelection(currentPage + 5)}
     >

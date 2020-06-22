@@ -68,7 +68,7 @@
 
   &:hover,
   &:focus {
-    color: $color-red;
+    color: $color-blue;
   }
   @include respond("md") {
     font-size: 1.4rem;

@@ -29,11 +29,15 @@ function SideBar(props) {
       {trades ? (
         <>
           {inOut === "in" ? (
-            <h2 className={styles.selectorAlt} onClick={handleInOut}>
+            <h2
+              tabIndex={0}
+              className={styles.selectorAlt}
+              onClick={handleInOut}
+            >
               Inbound Trades
             </h2>
           ) : (
-            <h2 className={styles.selector} onClick={handleInOut}>
+            <h2 tabIndex={0} className={styles.selector} onClick={handleInOut}>
               Outbound Trades
             </h2>
           )}
@@ -49,7 +53,7 @@ function SideBar(props) {
         </>
       ) : myBooks ? (
         <>
-          <h2 className={styles.selector} onClick={handleNewBook}>
+          <h2 tabIndex={0} className={styles.selector} onClick={handleNewBook}>
             Add a Book
           </h2>
 

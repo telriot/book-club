@@ -70,7 +70,7 @@ function UserDetail(props) {
       <button className={styles.button}>In your books</button>
     )
   return (
-    <div className={styles.wrapper}>
+    <div tabIndex={0} className={styles.wrapper}>
       <div className={styles.user} key={`userDiv-${index}`}>
         <p className={styles.userText}>
           <Link to={`/users/${user.username}`}>{user.username}</Link> (
